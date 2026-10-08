@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ZapisScreen from "./components/ZapisScreen.tsx";
 import "./App.css";
 
