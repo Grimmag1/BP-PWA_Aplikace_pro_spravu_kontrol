@@ -1,8 +1,13 @@
 // src/components/HeaderStavby.tsx
-import type { Stavba } from "../types.tsx";
+import type { Stavba, Zapis } from "../types.tsx";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { cs } from "date-fns/locale";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function HeaderStavby({ stavba }: { stavba: Stavba }) {
+function HeaderStavby({ stavba, zapis }: { stavba: Stavba; zapis: Zapis }) {
+  const [datum, setDatum] = useState<Date>(new Date());
   const navigate = useNavigate();
 
   return (
@@ -35,7 +40,21 @@ function HeaderStavby({ stavba }: { stavba: Stavba }) {
           whiteSpace: "nowrap",
         }}
       >
-        <p>Kontrola č. {stavba.cisloKontroly}</p>
+        <p>Kontrola č. {zapis.poradoveCislo}</p>
+
+        <DatePicker
+          selected={datum}
+          onChange={(datum: Date | null) => datum && setDatum(datum)}
+          dateFormat="dd-mm-yyyy"
+          portalId="root"
+          withPortal
+          locale={cs}
+          customInput={
+            <span style={{ cursor: "pointer" }}>
+              {datum.toLocaleDateString("cs-CZ")}
+            </span>
+          }
+        />
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
 export type Zavada = {
   id: number;
   poradoveCislo: number;
-  cisloKontroly: number;
+  zdrojKontrola: number | null;
+  typ: "predchozi" | "povinna" | "nova";
   name: string;
   primaryDescription: string;
   secondaryDescription: string;
@@ -9,9 +10,18 @@ export type Zavada = {
   stav: "soulad" | "nesoulad" | "v_procesu" | "null";
 };
 
+export type Zapis = {
+  id: number;
+  poradoveCislo: number;
+  datum: string;
+  zavady: Zavada[];
+};
+
 export type Stavba = {
   id: number;
   jmeno: string;
-  cisloKontroly: number;
-  datum: string;
+  zhotovitel: string;
+  adresa: string;
+  status: "aktivní" | "ukončená";
+  zapisy: Zapis[];
 };

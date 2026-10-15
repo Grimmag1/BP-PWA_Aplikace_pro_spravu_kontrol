@@ -1,88 +1,25 @@
 // src/components/ZapisScreen.tsx
-import { useState } from "react";
-import type { Stavba, Zavada } from "../types.tsx";
 import HeaderStavby from "./HeaderStavby.tsx";
 import SekceZavad from "./SekceZavad.tsx";
+import { mockStavby } from "../mockdata.ts";
 
-const mockStavba: Stavba = {
-  id: 1,
-  jmeno: "Stavba A",
-  cisloKontroly: 5,
-  datum: "01-10-2026",
-};
+function ZapisScreen({
+  stavbaId,
+  zapisId,
+}: {
+  stavbaId: number;
+  zapisId: number;
+}) {
+  const stavba = mockStavby.find((s) => s.id === stavbaId)!;
+  const zapis = stavba.zapisy.find((z) => z.id === zapisId)!;
 
-const mockPredchoziZavady: Zavada[] = [
-  {
-    id: 1,
-    poradoveCislo: 1,
-    cisloKontroly: 4,
-    name: "Zavada 1",
-    primaryDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    secondaryDescription: "Zapažení není správně nainstalováno",
-    foto: null,
-    stav: "nesoulad",
-  },
-  {
-    id: 2,
-    poradoveCislo: 2,
-    cisloKontroly: 2,
-    name: "Zavada 2",
-    primaryDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    secondaryDescription: "Pracovníci nejsou vybaveni ochrannými pomůckami",
-    foto: null,
-    stav: "nesoulad",
-  },
-];
-
-const mockPovinneZavady: Zavada[] = [
-  {
-    id: 1,
-    poradoveCislo: 1,
-    cisloKontroly: 5,
-    name: "Zavada 1",
-    primaryDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    secondaryDescription: "Zapažení není správně nainstalováno",
-    foto: null,
-    stav: "nesoulad",
-  },
-  {
-    id: 2,
-    poradoveCislo: 2,
-    cisloKontroly: 5,
-    name: "Zavada 2",
-    primaryDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    secondaryDescription: "Pracovníci nejsou vybaveni ochrannými pomůckami",
-    foto: null,
-    stav: "nesoulad",
-  },
-];
-
-const mockAktualniZavady: Zavada[] = [
-  {
-    id: 1,
-    poradoveCislo: 3,
-    cisloKontroly: 5,
-    name: "Zavada 1",
-    primaryDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    secondaryDescription: "Oplocení je příliš nízké",
-    foto: null,
-    stav: "null",
-  },
-];
-
-function ZapisScreen() {
-  const [predchoziZavady] = useState<Zavada[]>(mockPredchoziZavady);
-  const [povinneZavady] = useState<Zavada[]>(mockPovinneZavady);
-  const [aktualniZavady] = useState<Zavada[]>(mockAktualniZavady);
+  const predchoziZavady = zapis.zavady.filter((z) => z.typ === "predchozi");
+  const povinneZavady = zapis.zavady.filter((z) => z.typ === "povinna");
+  const aktualniZavady = zapis.zavady.filter((z) => z.typ === "nova");
 
   return (
     <div>
-      <HeaderStavby stavba={mockStavba} />
+      <HeaderStavby stavba={stavba} zapis={zapis} />
 
       <SekceZavad
         nazev="Závady z předchozích kontrol"

@@ -63,7 +63,7 @@ function ZavadaItem({ zavada }: { zavada: Zavada }) {
           textAlign: "left",
         }}
       >
-        {zavada.poradoveCislo}/{zavada.cisloKontroly} {zavada.name}
+        {zavada.poradoveCislo}/{zavada.zdrojKontrola} {zavada.name}
       </p>
       <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
         <p style={{ flex: 1, textAlign: "left" }}>
