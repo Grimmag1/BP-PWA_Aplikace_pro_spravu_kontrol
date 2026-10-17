@@ -807,7 +807,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription: "Pracoviště splňuje všechny požadavky.",
             secondaryDescription: "",
             foto: null,
-            stav: "soulad",
+            stav: "nesoulad",
           },
           {
             id: 7,
@@ -818,7 +818,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription: "Odvodnění staveniště je funkční.",
             secondaryDescription: "",
             foto: null,
-            stav: "soulad",
+            stav: "nesoulad",
           },
           {
             id: 8,
@@ -829,7 +829,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription: "Dočasné konstrukce odstraněny.",
             secondaryDescription: "",
             foto: null,
-            stav: "soulad",
+            stav: "nesoulad",
           },
         ],
       },

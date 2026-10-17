@@ -2,33 +2,71 @@
 import HeaderStavby from "./HeaderStavby.tsx";
 import SekceZavad from "./SekceZavad.tsx";
 import { mockStavby } from "../mockdata.ts";
+import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import type { Zavada } from "../types.tsx";
 
-function ZapisScreen({
-  stavbaId,
-  zapisId,
-}: {
-  stavbaId: number;
-  zapisId: number;
-}) {
+function ZapisScreen() {
+  const [searchParams] = useSearchParams();
+  const stavbaId = Number(searchParams.get("stavbaId")) || 1;
   const stavba = mockStavby.find((s) => s.id === stavbaId)!;
-  const zapis = stavba.zapisy.find((z) => z.id === zapisId)!;
+  const posledniZapis = stavba.zapisy[stavba.zapisy.length - 1];
+  const noveCisloZapisu = stavba.zapisy.length + 1;
 
-  const predchoziZavady = zapis.zavady.filter((z) => z.typ === "predchozi");
-  const povinneZavady = zapis.zavady.filter((z) => z.typ === "povinna");
-  const aktualniZavady = zapis.zavady.filter((z) => z.typ === "nova");
+  const initialPredchoziZavady: Zavada[] = posledniZapis.zavady
+    .filter((z) => z.stav === "nesoulad" || z.stav === "v_procesu")
+    .map((z) => ({
+      ...z,
+      typ: "predchozi" as const,
+      stav: "nesoulad" as const,
+      zdrojKontrola: z.zdrojKontrola ?? posledniZapis.poradoveCislo,
+    }));
+
+  const initialPovinneZavady: Zavada[] = posledniZapis.zavady
+    .filter((z) => z.typ === "povinna")
+    .map((z) => ({ ...z, stav: "nesoulad" as const }));
+
+  const [predchoziZavady, setPredchoziZavady] = useState<Zavada[]>(
+    initialPredchoziZavady,
+  );
+  const [povinneZavady, setPovinneZavady] =
+    useState<Zavada[]>(initialPovinneZavady);
+  const [aktualniZavady, setAktualniZavady] = useState<Zavada[]>([]);
+
+  const handleStavChange = (
+    setter: React.Dispatch<React.SetStateAction<Zavada[]>>,
+    id: number,
+    novyStav: Zavada["stav"],
+  ) => {
+    setter((prev) =>
+      prev.map((z) => (z.id === id ? { ...z, stav: novyStav } : z)),
+    );
+  };
 
   return (
     <div>
-      <HeaderStavby stavba={stavba} zapis={zapis} />
+      <HeaderStavby stavba={stavba} cisloZapisu={noveCisloZapisu} />
 
       <SekceZavad
         nazev="Závady z předchozích kontrol"
         zavady={predchoziZavady}
+        onStavChange={(id, stav) =>
+          handleStavChange(setPredchoziZavady, id, stav)
+        }
       />
-      <SekceZavad nazev="Povinné závady" zavady={povinneZavady} />
+      <SekceZavad
+        nazev="Povinné závady"
+        zavady={povinneZavady}
+        onStavChange={(id, stav) =>
+          handleStavChange(setPovinneZavady, id, stav)
+        }
+      />
       <SekceZavad
         nazev="Závady z aktuální kontroly"
         zavady={aktualniZavady}
+        onStavChange={(id, stav) =>
+          handleStavChange(setAktualniZavady, id, stav)
+        }
         showAddButton
       />
     </div>

@@ -6,7 +6,13 @@ import { cs } from "date-fns/locale";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function HeaderStavby({ stavba, zapis }: { stavba: Stavba; zapis: Zapis }) {
+function HeaderStavby({
+  stavba,
+  cisloZapisu,
+}: {
+  stavba: Stavba;
+  cisloZapisu: Zapis["poradoveCislo"];
+}) {
   const [datum, setDatum] = useState<Date>(new Date());
   const navigate = useNavigate();
 
@@ -40,7 +46,7 @@ function HeaderStavby({ stavba, zapis }: { stavba: Stavba; zapis: Zapis }) {
           whiteSpace: "nowrap",
         }}
       >
-        <p>Kontrola č. {zapis.poradoveCislo}</p>
+        <p>Kontrola č. {cisloZapisu}</p>
 
         <DatePicker
           selected={datum}

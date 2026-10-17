@@ -7,10 +7,12 @@ function SekceZavad({
   nazev,
   zavady,
   showAddButton = false,
+  onStavChange,
 }: {
   nazev: string;
   zavady: Zavada[];
   showAddButton?: boolean;
+  onStavChange?: (id: number, stav: Zavada["stav"]) => void;
 }) {
   const [rozbaleno, setRozbaleno] = useState(true);
 
@@ -33,7 +35,11 @@ function SekceZavad({
       {rozbaleno && (
         <div>
           {zavady.map((zavada) => (
-            <ZavadaItem key={zavada.id} zavada={zavada} />
+            <ZavadaItem
+              key={zavada.id}
+              zavada={zavada}
+              onStavChange={onStavChange}
+            />
           ))}
         </div>
       )}

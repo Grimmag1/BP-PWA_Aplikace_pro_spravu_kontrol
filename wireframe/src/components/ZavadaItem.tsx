@@ -1,17 +1,26 @@
-import { useState } from "react";
 import type { Zavada } from "../types.tsx";
 
-function ZavadaItem({ zavada }: { zavada: Zavada }) {
-  const [stav, setStav] = useState(zavada.stav);
-
+function ZavadaItem({
+  zavada,
+  onStavChange,
+}: {
+  zavada: Zavada;
+  onStavChange?: (id: number, stav: Zavada["stav"]) => void;
+}) {
   const cycleStav = () => {
-    setStav((s) => {
-      if (s === "nesoulad") return "soulad";
-      else if (s === "soulad") return "v_procesu";
-      else if (s === "v_procesu") return "nesoulad";
-      return "null";
-    });
+    const next: Zavada["stav"] =
+      zavada.stav === "null"
+        ? "nesoulad"
+        : zavada.stav === "nesoulad"
+          ? "soulad"
+          : zavada.stav === "soulad"
+            ? "v_procesu"
+            : zavada.stav === "v_procesu"
+              ? "nesoulad"
+              : "null";
+    onStavChange?.(zavada.id, next);
   };
+
   const stavConfig = {
     nesoulad: { barva: "#e53935", symbol: "✕" },
     soulad: { barva: "#43a047", symbol: "✓" },
@@ -19,7 +28,7 @@ function ZavadaItem({ zavada }: { zavada: Zavada }) {
     null: { barva: "white", symbol: "" },
   };
 
-  const { barva, symbol } = stavConfig[stav];
+  const { barva, symbol } = stavConfig[zavada.stav];
 
   return (
     <div
@@ -32,7 +41,7 @@ function ZavadaItem({ zavada }: { zavada: Zavada }) {
         position: "relative",
       }}
     >
-      {stav !== "null" && (
+      {zavada.stav !== "null" && (
         <button
           onClick={cycleStav}
           style={{

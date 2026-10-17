@@ -1,11 +1,24 @@
 import { useNavigate } from "react-router-dom";
+import { mockStavby } from "../mockdata";
+import StavbaItem from "./StavbaItem.tsx";
 
 function SeznamStavebScreen() {
   const navigate = useNavigate();
+  const handleNovyZapis = (stavbaId: number) => {
+    navigate(`/zapis?stavbaId=${stavbaId}`);
+  };
   return (
     <div>
-      <h1>Seznam staveb</h1>
-      <button onClick={() => navigate("/zapis")}>Button</button>
+      <h1 style={{ textAlign: "center", marginBottom: "16px" }}>
+        Seznam staveb
+      </h1>
+      {mockStavby.map((stavba) => (
+        <StavbaItem
+          key={stavba.id}
+          stavba={stavba}
+          onNovyZapis={handleNovyZapis}
+        />
+      ))}
     </div>
   );
 }
