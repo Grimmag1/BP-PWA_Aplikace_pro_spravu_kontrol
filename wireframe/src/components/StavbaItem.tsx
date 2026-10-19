@@ -1,4 +1,9 @@
 import type { Stavba } from "../types";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+const HOLD_DELAY = 1000;
 
 function StavbaItem({
   stavba,
@@ -7,14 +12,39 @@ function StavbaItem({
   stavba: Stavba;
   onNovyZapis: (stavbaId: number) => void;
 }) {
+  const navigate = useNavigate();
+
+  const startPress = useRef<number | null>(null);
+  const [pressed, setPressed] = useState(false);
+
+  const handleMouseDown = () => {
+    startPress.current = Date.now();
+    setPressed(true);
+  };
+  const handleMouseUp = () => {
+    setPressed(false);
+    if (startPress.current && Date.now() - startPress.current > HOLD_DELAY) {
+      navigate(`/zapis?stavbaId=${1}`);
+    }
+    startPress.current = null;
+  };
+
   return (
     <div
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onTouchStart={handleMouseDown}
+      onTouchEnd={handleMouseUp}
       style={{
         border: "1px solid #ccc",
         borderRadius: "8px",
         padding: "12px",
         marginBottom: "8px",
-        backgroundColor: "#fff",
+        backgroundColor: pressed ? "#d0d0d0" : "#fff",
+        transition: pressed
+          ? `background-color ${HOLD_DELAY}ms ease`
+          : "background-color 0.1s ease",
+        userSelect: "none",
       }}
     >
       <p style={{ fontWeight: "bold", fontSize: "16px", marginBottom: "4px" }}>
