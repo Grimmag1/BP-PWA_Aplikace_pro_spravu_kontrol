@@ -7,28 +7,25 @@ function ZavadaItem({
   zavada: Zavada;
   onStavChange?: (id: number, stav: Zavada["stav"]) => void;
 }) {
-  const cycleStav = () => {
-    const next: Zavada["stav"] =
-      zavada.stav === "null"
-        ? "nesoulad"
-        : zavada.stav === "nesoulad"
-          ? "soulad"
-          : zavada.stav === "soulad"
-            ? "v_procesu"
-            : zavada.stav === "v_procesu"
-              ? "nesoulad"
-              : "null";
-    onStavChange?.(zavada.id, next);
+  const nextStav = (current: Zavada["stav"]): Zavada["stav"] => {
+    if (current === "nesoulad") return "soulad";
+    if (current === "soulad") return "v_procesu";
+    if (current === "v_procesu") return "nesoulad";
+    return "nesoulad";
   };
 
-  const stavConfig = {
-    nesoulad: { barva: "#e53935", symbol: "✕" },
-    soulad: { barva: "#43a047", symbol: "✓" },
-    v_procesu: { barva: "#fb8c00", symbol: "–" },
-    null: { barva: "white", symbol: "" },
+  const barva: Record<string, string> = {
+    nesoulad: "#e53935",
+    v_procesu: "#fb8c00",
+    soulad: "#43a047",
   };
 
-  const { barva, symbol } = stavConfig[zavada.stav];
+  const stavLeft: Record<string, string> = {
+    nesoulad: "4px",
+    v_procesu: "calc(50% - 12px)",
+    soulad: "calc(100% - 28px)",
+    null: "4px",
+  };
 
   return (
     <div
@@ -41,40 +38,61 @@ function ZavadaItem({
         position: "relative",
       }}
     >
-      {zavada.stav !== "null" && (
-        <button
-          onClick={cycleStav}
+      {
+        <div
           style={{
-            position: "absolute",
-            top: "8px",
-            right: "8px",
-            width: "24px",
-            height: "24px",
-            borderRadius: "50%",
-            backgroundColor: barva,
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "16px",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "space-between",
+            marginBottom: "4px",
           }}
         >
-          {symbol}
-        </button>
-      )}
-      <p
+          <p
+            style={{
+              fontWeight: "bold",
+              margin: 0,
+            }}
+          >
+            {zavada.poradoveCislo}/{zavada.zdrojKontrola} {zavada.name}
+          </p>
+          <div
+            onClick={() => onStavChange?.(zavada.id, nextStav(zavada.stav))}
+            style={{
+              position: "relative",
+              width: "80px",
+              height: "32px",
+              backgroundColor: "#e0e0e0",
+              borderRadius: "20px",
+              cursor: "pointer",
+              userSelect: "none",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "4px",
+                left: stavLeft[zavada.stav],
+                width: "24px",
+                height: "24px",
+                borderRadius: "50%",
+                backgroundColor:
+                  zavada.stav !== "null" ? barva[zavada.stav] : "#999",
+                transition: "left 0.25s ease, background-color 0.25s ease",
+              }}
+            />
+          </div>
+        </div>
+      }
+
+      <div style={{ borderBottom: "1px dashed #ccc", marginBottom: "8px" }} />
+
+      <div
         style={{
-          fontWeight: "bold",
-          borderBottom: "1px dashed #ccc",
-          paddingBottom: "4px",
-          textAlign: "left",
+          display: "flex",
+          gap: "12px",
+          marginTop: "8px",
         }}
       >
-        {zavada.poradoveCislo}/{zavada.zdrojKontrola} {zavada.name}
-      </p>
-      <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
         <p style={{ flex: 1, textAlign: "left" }}>
           {zavada.primaryDescription}
         </p>
