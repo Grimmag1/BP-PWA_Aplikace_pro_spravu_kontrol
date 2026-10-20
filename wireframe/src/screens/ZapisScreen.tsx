@@ -2,14 +2,13 @@
 import HeaderStavby from "../components/HeaderStavby.tsx";
 import SekceZavad from "../components/SekceZavad.tsx";
 import { mockStavby } from "../mockdata.ts";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 import type { Zavada } from "../types.tsx";
 
 function ZapisScreen() {
-  const [searchParams] = useSearchParams();
-  const stavbaId = Number(searchParams.get("stavbaId")) || 1;
-  const stavba = mockStavby.find((s) => s.id === stavbaId)!;
+  const { stavbaId } = useParams();
+  const stavba = mockStavby.find((s) => s.id === Number(stavbaId))!;
   const posledniZapis = stavba.zapisy[stavba.zapisy.length - 1];
   const noveCisloZapisu = stavba.zapisy.length + 1;
 

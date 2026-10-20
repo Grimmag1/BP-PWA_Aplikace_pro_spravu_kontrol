@@ -24,7 +24,7 @@ function StavbaItem({
   const handleMouseUp = () => {
     setPressed(false);
     if (startPress.current && Date.now() - startPress.current > HOLD_DELAY) {
-      navigate(`/stavba?stavbaId=${stavba.id}`);
+      navigate(`/stavba/${stavba.id}/info`);
     }
     startPress.current = null;
   };

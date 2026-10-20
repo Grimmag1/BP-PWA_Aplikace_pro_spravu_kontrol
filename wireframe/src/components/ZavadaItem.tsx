@@ -1,4 +1,5 @@
 import type { Zavada } from "../types.tsx";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function ZavadaItem({
   zavada,
@@ -7,6 +8,9 @@ function ZavadaItem({
   zavada: Zavada;
   onStavChange?: (id: number, stav: Zavada["stav"]) => void;
 }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const nextStav = (current: Zavada["stav"]): Zavada["stav"] => {
     if (current === "nesoulad") return "soulad";
     if (current === "soulad") return "v_procesu";
@@ -29,6 +33,7 @@ function ZavadaItem({
 
   return (
     <div
+      onClick={() => navigate(`${location.pathname}/zavada/${zavada.id}`)}
       style={{
         border: "1px solid #ccc",
         backgroundColor: zavada.id % 2 ? "#fce4ec" : "#f3e5f5",

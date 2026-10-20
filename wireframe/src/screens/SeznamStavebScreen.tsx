@@ -5,7 +5,7 @@ import StavbaItem from "../components/StavbaItem.tsx";
 function SeznamStavebScreen() {
   const navigate = useNavigate();
   const handleNovyZapis = (stavbaId: number) => {
-    navigate(`/zapis?stavbaId=${stavbaId}`);
+    navigate(`/stavba/${stavbaId}/zapis/`);
   };
   return (
     <div>
