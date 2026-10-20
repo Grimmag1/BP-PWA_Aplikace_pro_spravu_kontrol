@@ -34,6 +34,18 @@ function SekceZavad({
 
       {rozbaleno && (
         <div>
+          {zavady.length === 0 && (
+            <p
+              style={{
+                textAlign: "center",
+                color: "#999",
+                padding: "16px",
+                fontStyle: "italic",
+              }}
+            >
+              Zatím žádné závady
+            </p>
+          )}
           {zavady.map((zavada) => (
             <ZavadaItem
               key={zavada.id}

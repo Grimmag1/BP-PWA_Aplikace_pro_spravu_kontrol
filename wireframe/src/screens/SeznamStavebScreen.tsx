@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { mockStavby } from "../mockdata";
-import StavbaItem from "./StavbaItem.tsx";
+import { mockStavby } from "../mockdata.ts";
+import StavbaItem from "../components/StavbaItem.tsx";
 
 function SeznamStavebScreen() {
   const navigate = useNavigate();

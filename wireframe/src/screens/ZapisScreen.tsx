@@ -1,6 +1,6 @@
 // src/components/ZapisScreen.tsx
-import HeaderStavby from "./HeaderStavby.tsx";
-import SekceZavad from "./SekceZavad.tsx";
+import HeaderStavby from "../components/HeaderStavby.tsx";
+import SekceZavad from "../components/SekceZavad.tsx";
 import { mockStavby } from "../mockdata.ts";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
