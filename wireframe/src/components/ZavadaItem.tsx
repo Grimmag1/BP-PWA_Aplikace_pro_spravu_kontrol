@@ -61,7 +61,10 @@ function ZavadaItem({
             {zavada.poradoveCislo}/{zavada.zdrojKontrola} {zavada.name}
           </p>
           <div
-            onClick={() => onStavChange?.(zavada.id, nextStav(zavada.stav))}
+            onClick={(e) => {
+              e.stopPropagation();
+              onStavChange?.(zavada.id, nextStav(zavada.stav));
+            }}
             style={{
               position: "relative",
               width: "80px",
