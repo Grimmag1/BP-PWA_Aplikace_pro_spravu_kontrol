@@ -45,11 +45,36 @@ function StavbaItem({
           ? `background-color ${HOLD_DELAY}ms ease`
           : "background-color 0.1s ease",
         userSelect: "none",
+        position: "relative",
       }}
     >
       <p style={{ fontWeight: "bold", fontSize: "16px", marginBottom: "4px" }}>
         {stavba.jmeno}
       </p>
+
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`/stavba/${stavba.id}/info`);
+        }}
+        style={{
+          position: "absolute",
+          top: "12px",
+          right: "12px",
+          width: "30px",
+          height: "30px",
+          borderRadius: "50%",
+          backgroundColor: "#6a0dad",
+          color: "white",
+          border: "none",
+          cursor: "pointer",
+          fontSize: "17px",
+          fontWeight: "bold",
+        }}
+      >
+        i
+      </button>
+
       <p style={{ color: "#666", fontSize: "14px" }}>{stavba.adresa}</p>
       <p style={{ color: "#666", fontSize: "14px" }}>
         Zhotovitel: {stavba.zhotovitel}

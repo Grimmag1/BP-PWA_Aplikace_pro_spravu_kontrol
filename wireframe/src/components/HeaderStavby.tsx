@@ -22,6 +22,7 @@ function HeaderStavby({
         style={{
           display: "flex",
           alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <button
@@ -37,6 +38,23 @@ function HeaderStavby({
         </button>
 
         <h1 style={{ flex: 1, textAlign: "center" }}>{stavba.jmeno}</h1>
+
+        <button
+          onClick={() => navigate(`/stavba/${stavba.id}/info`)}
+          style={{
+            width: "30px",
+            height: "30px",
+            borderRadius: "6px",
+            backgroundColor: "white",
+            color: "black",
+            border: "2px solid black",
+            cursor: "pointer",
+            fontSize: "18px",
+            fontWeight: "bold",
+          }}
+        >
+          i
+        </button>
       </div>
 
       <div
