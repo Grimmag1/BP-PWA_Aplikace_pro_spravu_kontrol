@@ -1,27 +1,29 @@
 import { useNavigate, useParams, useOutletContext } from "react-router-dom";
-import { mockStavby } from "../mockdata";
 import { useState } from "react";
 import type { ZapisContext } from "./ZapisScreen";
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+  TextArea,
+  TextField,
+} from "@radix-ui/themes";
 
 function ZavadaInfoScreen() {
-  const { stavbaId, zapisId, zavadaId } = useParams();
-  const { aktualniZavady, dalsiZavada, ulozitZavadu } =
+  const { zavadaId } = useParams();
+  const { zavady, dalsiZavada, ulozitZavadu } =
     useOutletContext<ZapisContext>();
   const navigate = useNavigate();
-
-  const stavba = mockStavby.find((s) => s.id === Number(stavbaId))!;
-  const zapis =
-    stavba.zapisy.find((z) => z.id === Number(zapisId)) ??
-    stavba.zapisy[stavba.zapisy.length - 1];
 
   const [novaZavada] = useState(() =>
     zavadaId === "nova" ? dalsiZavada() : null,
   );
-  const aktualniZavada = aktualniZavady.find((z) => z.id === Number(zavadaId));
-  const zavada =
-    novaZavada ??
-    aktualniZavada ??
-    zapis.zavady.find((z) => z.id === Number(zavadaId))!;
+
+  const zavada = novaZavada ?? zavady.find((z) => z.id === Number(zavadaId))!;
 
   const [name, setName] = useState(zavada.name);
   const [primaryDescription, setPrimaryDescription] = useState(
@@ -37,32 +39,12 @@ function ZavadaInfoScreen() {
     secondaryDescription !== zavada.secondaryDescription;
 
   const handleUlozit = () => {
-    if (novaZavada || aktualniZavada) {
-      ulozitZavadu({
-        ...zavada,
-        name,
-        primaryDescription,
-        secondaryDescription,
-      });
-      navigate(-1);
-      return;
-    }
-
-    const stavbaIndex = mockStavby.findIndex((s) => s.id === Number(stavbaId));
-    const zapisIndex = mockStavby[stavbaIndex].zapisy.findIndex(
-      (z) => z.id === zapis.id,
-    );
-    const zavadaIndex = mockStavby[stavbaIndex].zapisy[
-      zapisIndex
-    ].zavady.findIndex((z) => z.id === zavada.id);
-
-    mockStavby[stavbaIndex].zapisy[zapisIndex].zavady[zavadaIndex] = {
+    ulozitZavadu({
       ...zavada,
       name,
       primaryDescription,
       secondaryDescription,
-    };
-
+    });
     navigate(-1);
   };
 
@@ -85,132 +67,76 @@ function ZavadaInfoScreen() {
     }
   };
 
-  const inputStyle = {
-    width: "100%",
-    padding: "8px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-    backgroundColor: "white",
-    marginBottom: "8px",
-    boxSizing: "border-box" as const,
-  };
-
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        backgroundColor: "rgba(0,0,0,0.5)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: "#fce4ec",
-          padding: "16px",
-          width: "100%",
-          height: "100%",
-          position: "relative",
-          boxSizing: "border-box",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <button
-          onClick={handleZavrit}
-          style={{
-            position: "absolute",
-            top: "12px",
-            right: "12px",
-            background: "none",
-            border: "none",
-            fontSize: "18px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
+    <Flex direction="column" gap="3" p="4" style={{ minHeight: "100svh" }}>
+      <Flex justify="between" align="center">
+        <Flex align="baseline" gap="2">
+          <Heading size="5">Závada č. {zavada.poradoveCislo}</Heading>
+          <Text size="2" color="gray">
+            {zavada.zdrojKontrola !== null
+              ? `ze zápisu č. ${zavada.zdrojKontrola}`
+              : "z aktuálního zápisu"}
+          </Text>
+        </Flex>
+
+        <IconButton variant="ghost" color="gray" onClick={handleZavrit}>
           X
-        </button>
+        </IconButton>
+      </Flex>
 
-        <input
-          readOnly
-          value={`Závada č. ${zavada.poradoveCislo}`}
-          style={inputStyle}
-        />
+      <TextField.Root
+        size="3"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Název závady"
+      />
 
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Název závady"
-          style={inputStyle}
-        />
+      <TextArea
+        size="3"
+        value={primaryDescription}
+        onChange={(e) => setPrimaryDescription(e.target.value)}
+        placeholder="Prvotní popis (viditelný v přehledu závad)"
+        rows={3}
+      />
 
-        <textarea
-          defaultValue={primaryDescription}
-          onChange={(e) => setPrimaryDescription(e.target.value)}
-          placeholder="Prvotní popis (viditelný v přehledu závad)"
-          rows={3}
-          style={{ ...inputStyle, flex: 1 }}
-        />
+      <TextArea
+        size="3"
+        value={secondaryDescription}
+        onChange={(e) => setSecondaryDescription(e.target.value)}
+        placeholder="Sekundární popis (viditelný v detailu závady)"
+        rows={3}
+      />
 
-        <textarea
-          value={secondaryDescription}
-          onChange={(e) => setSecondaryDescription(e.target.value)}
-          placeholder="Sekundární popis (viditelný v detailu závady)"
-          rows={3}
-          style={{ ...inputStyle, flex: 1 }}
-        />
+      <Card style={{ flex: 1, minHeight: 160 }}>
+        <Flex height="100%" align="center" justify="center">
+          <Text color="gray">Vložit foto/otevřít kameru</Text>
+        </Flex>
+      </Card>
 
-        <div
-          style={{
-            ...inputStyle,
-            flex: 2,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <p style={{ color: "#999" }}>Vložit foto/otevřít kameru</p>
-        </div>
-
-        <div style={{ display: "flex", gap: "8px", marginTop: "auto" }}>
-          <button
+      <Flex gap="3">
+        <Box flexGrow="1">
+          <Button
             onClick={handleStorno}
-            style={{
-              flex: 1,
-              padding: "12px",
-              backgroundColor: "#e53935",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontSize: "16px",
-              fontWeight: "bold",
-            }}
+            variant="soft"
+            size="3"
+            color="red"
+            style={{ width: "100%" }}
           >
             Storno
-          </button>
-          <button
+          </Button>
+        </Box>
+        <Box flexGrow="1">
+          <Button
             onClick={handleUlozit}
-            style={{
-              flex: 1,
-              padding: "12px",
-              backgroundColor: "#43a047",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontSize: "16px",
-              fontWeight: "bold",
-            }}
+            color="green"
+            size="3"
+            style={{ width: "100%" }}
           >
             Uložit
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Box>
+      </Flex>
+    </Flex>
   );
 }
 

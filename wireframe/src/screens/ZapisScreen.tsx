@@ -2,12 +2,12 @@
 import HeaderStavby from "../components/HeaderStavby.tsx";
 import SekceZavad from "../components/SekceZavad.tsx";
 import { mockStavby } from "../mockdata.ts";
-import { useParams, useNavigate, Outlet } from "react-router-dom";
+import { useParams, useNavigate, useOutlet } from "react-router-dom";
 import { useState } from "react";
 import type { Zavada } from "../types.tsx";
 
 export type ZapisContext = {
-  aktualniZavady: Zavada[];
+  zavady: Zavada[];
   dalsiZavada: () => Zavada;
   ulozitZavadu: (zavada: Zavada) => void;
 };
@@ -67,16 +67,42 @@ function ZapisScreen() {
   });
 
   const ulozitZavadu = (zavada: Zavada) => {
-    setAktualniZavady((prev) =>
-      prev.some((z) => z.id === zavada.id)
-        ? prev.map((z) => (z.id === zavada.id ? zavada : z))
-        : [...prev, zavada],
-    );
+    if (zavada.typ === "nova") {
+      setAktualniZavady((prev) =>
+        prev.some((z) => z.id === zavada.id)
+          ? prev.map((z) => (z.id === zavada.id ? zavada : z))
+          : [...prev, zavada],
+      );
+      return;
+    }
+
+    const upravit = (prev: Zavada[]) =>
+      prev.map((z) =>
+        z.id === zavada.id
+          ? {
+              ...z,
+              name: zavada.name,
+              primaryDescription: zavada.primaryDescription,
+              secondaryDescription: zavada.secondaryDescription,
+            }
+          : z,
+      );
+    setPredchoziZavady(upravit);
+    setPovinneZavady(upravit);
   };
 
   const handlePridatZavadu = () => {
     navigate(`/stavba/${stavbaId}/zapis/zavada/nova`);
   };
+
+  const outlet = useOutlet({
+    zavady: [...predchoziZavady, ...povinneZavady, ...aktualniZavady],
+    dalsiZavada,
+    ulozitZavadu,
+  } satisfies ZapisContext);
+
+  if (outlet) return outlet;
+
   return (
     <div>
       <HeaderStavby stavba={stavba} cisloZapisu={noveCisloZapisu} />
@@ -102,11 +128,6 @@ function ZapisScreen() {
         }
         onPridatZavadu={handlePridatZavadu}
         showAddButton
-      />
-      <Outlet
-        context={
-          { aktualniZavady, dalsiZavada, ulozitZavadu } satisfies ZapisContext
-        }
       />
     </div>
   );

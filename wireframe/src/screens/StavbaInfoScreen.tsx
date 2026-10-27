@@ -1,20 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { Button } from "@radix-ui/themes";
 
 function StavbaInfoScreen() {
   const navigate = useNavigate();
   return (
     <div>
-      <button
-        onClick={() => navigate(-1)}
-        style={{
-          background: "none",
-          border: "none",
-          fontSize: "20px",
-          cursor: "pointer",
-        }}
-      >
-        ←
-      </button>
+      <Button onClick={() => navigate(-1)}>←</Button>
     </div>
   );
 }
