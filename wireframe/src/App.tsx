@@ -9,12 +9,10 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<SeznamStavebScreen />} />
-      <Route path="/stavba/:stavbaId/zapis/" element={<ZapisScreen />} />
+      <Route path="/stavba/:stavbaId/zapis/" element={<ZapisScreen />}>
+        <Route path="zavada/:zavadaId" element={<ZavadaInfoScreen />} />
+      </Route>
       <Route path="/stavba/:stavbaId/info" element={<StavbaInfoScreen />} />
-      <Route
-        path="/stavba/:stavbaId/zapis/zavada/:zavadaId"
-        element={<ZavadaInfoScreen />}
-      />
     </Routes>
   );
 }

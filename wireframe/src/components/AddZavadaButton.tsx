@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function AddZavadaButton() {
+function AddZavadaButton({ onBezFotky }: { onBezFotky?: () => void }) {
   const [clicked, setClicked] = useState(false);
 
   return (
@@ -20,7 +20,14 @@ function AddZavadaButton() {
         >
           <button onClick={() => setClicked(false)}>Fotoaparát</button>
           <button onClick={() => setClicked(false)}>Galerie</button>
-          <button onClick={() => setClicked(false)}>Bez fotky</button>
+          <button
+            onClick={() => {
+              setClicked(false);
+              onBezFotky?.();
+            }}
+          >
+            Bez fotky
+          </button>
           <button onClick={() => setClicked(false)}>X</button>
         </div>
       )}

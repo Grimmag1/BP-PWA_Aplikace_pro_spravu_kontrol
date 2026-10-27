@@ -8,11 +8,13 @@ function SekceZavad({
   zavady,
   showAddButton = false,
   onStavChange,
+  onPridatZavadu,
 }: {
   nazev: string;
   zavady: Zavada[];
   showAddButton?: boolean;
   onStavChange?: (id: number, stav: Zavada["stav"]) => void;
+  onPridatZavadu?: () => void;
 }) {
   const [rozbaleno, setRozbaleno] = useState(true);
 
@@ -56,7 +58,7 @@ function SekceZavad({
         </div>
       )}
 
-      {showAddButton && <AddZavadaButton />}
+      {showAddButton && <AddZavadaButton onBezFotky={onPridatZavadu} />}
     </div>
   );
 }

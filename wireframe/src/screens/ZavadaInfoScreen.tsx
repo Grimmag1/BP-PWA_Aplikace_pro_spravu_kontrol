@@ -1,16 +1,27 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 import { mockStavby } from "../mockdata";
 import { useState } from "react";
+import type { ZapisContext } from "./ZapisScreen";
 
 function ZavadaInfoScreen() {
   const { stavbaId, zapisId, zavadaId } = useParams();
+  const { aktualniZavady, dalsiZavada, ulozitZavadu } =
+    useOutletContext<ZapisContext>();
   const navigate = useNavigate();
 
   const stavba = mockStavby.find((s) => s.id === Number(stavbaId))!;
   const zapis =
     stavba.zapisy.find((z) => z.id === Number(zapisId)) ??
     stavba.zapisy[stavba.zapisy.length - 1];
-  const zavada = zapis.zavady.find((z) => z.id === Number(zavadaId))!;
+
+  const [novaZavada] = useState(() =>
+    zavadaId === "nova" ? dalsiZavada() : null,
+  );
+  const aktualniZavada = aktualniZavady.find((z) => z.id === Number(zavadaId));
+  const zavada =
+    novaZavada ??
+    aktualniZavada ??
+    zapis.zavady.find((z) => z.id === Number(zavadaId))!;
 
   const [name, setName] = useState(zavada.name);
   const [primaryDescription, setPrimaryDescription] = useState(
@@ -26,6 +37,17 @@ function ZavadaInfoScreen() {
     secondaryDescription !== zavada.secondaryDescription;
 
   const handleUlozit = () => {
+    if (novaZavada || aktualniZavada) {
+      ulozitZavadu({
+        ...zavada,
+        name,
+        primaryDescription,
+        secondaryDescription,
+      });
+      navigate(-1);
+      return;
+    }
+
     const stavbaIndex = mockStavby.findIndex((s) => s.id === Number(stavbaId));
     const zapisIndex = mockStavby[stavbaIndex].zapisy.findIndex(
       (z) => z.id === zapis.id,

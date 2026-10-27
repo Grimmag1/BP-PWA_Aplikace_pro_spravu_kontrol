@@ -2,11 +2,18 @@
 import HeaderStavby from "../components/HeaderStavby.tsx";
 import SekceZavad from "../components/SekceZavad.tsx";
 import { mockStavby } from "../mockdata.ts";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Outlet } from "react-router-dom";
 import { useState } from "react";
 import type { Zavada } from "../types.tsx";
 
+export type ZapisContext = {
+  aktualniZavady: Zavada[];
+  dalsiZavada: () => Zavada;
+  ulozitZavadu: (zavada: Zavada) => void;
+};
+
 function ZapisScreen() {
+  const navigate = useNavigate();
   const { stavbaId } = useParams();
   const stavba = mockStavby.find((s) => s.id === Number(stavbaId))!;
   const posledniZapis = stavba.zapisy[stavba.zapisy.length - 1];
@@ -42,10 +49,37 @@ function ZapisScreen() {
     );
   };
 
+  const dalsiZavada = (): Zavada => ({
+    id:
+      Math.max(
+        0,
+        ...posledniZapis.zavady.map((z) => z.id),
+        ...aktualniZavady.map((z) => z.id),
+      ) + 1,
+    poradoveCislo: povinneZavady.length + aktualniZavady.length + 1,
+    zdrojKontrola: null,
+    typ: "nova",
+    name: "",
+    primaryDescription: "",
+    secondaryDescription: "",
+    foto: null,
+    stav: "nesoulad",
+  });
+
+  const ulozitZavadu = (zavada: Zavada) => {
+    setAktualniZavady((prev) =>
+      prev.some((z) => z.id === zavada.id)
+        ? prev.map((z) => (z.id === zavada.id ? zavada : z))
+        : [...prev, zavada],
+    );
+  };
+
+  const handlePridatZavadu = () => {
+    navigate(`/stavba/${stavbaId}/zapis/zavada/nova`);
+  };
   return (
     <div>
       <HeaderStavby stavba={stavba} cisloZapisu={noveCisloZapisu} />
-
       <SekceZavad
         nazev="Závady z předchozích kontrol"
         zavady={predchoziZavady}
@@ -66,7 +100,13 @@ function ZapisScreen() {
         onStavChange={(id, stav) =>
           handleStavChange(setAktualniZavady, id, stav)
         }
+        onPridatZavadu={handlePridatZavadu}
         showAddButton
+      />
+      <Outlet
+        context={
+          { aktualniZavady, dalsiZavada, ulozitZavadu } satisfies ZapisContext
+        }
       />
     </div>
   );
