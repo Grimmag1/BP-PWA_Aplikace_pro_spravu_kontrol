@@ -1,5 +1,6 @@
 import type { Zavada } from "../types.tsx";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Box, Card, Flex, Separator, Text } from "@radix-ui/themes";
 
 function ZavadaItem({
   zavada,
@@ -19,9 +20,9 @@ function ZavadaItem({
   };
 
   const barva: Record<string, string> = {
-    nesoulad: "#e53935",
-    v_procesu: "#fb8c00",
-    soulad: "#43a047",
+    nesoulad: "var(--red-9)",
+    v_procesu: "var(--orange-9)",
+    soulad: "var(--green-9)",
   };
 
   const stavLeft: Record<string, string> = {
@@ -32,78 +33,55 @@ function ZavadaItem({
   };
 
   return (
-    <div
+    <Card
       onClick={() => navigate(`${location.pathname}/zavada/${zavada.id}`)}
       style={{
-        border: "1px solid #ccc",
-        backgroundColor: zavada.id % 2 ? "#fce4ec" : "#f3e5f5",
-        borderRadius: "8px",
-        padding: "12px",
-        marginBottom: "8px",
-        position: "relative",
+        cursor: "pointer",
       }}
     >
-      {
-        <div
+      <Flex align="center" justify="between" gap="3">
+        <Text weight="bold">
+          {zavada.poradoveCislo}/{zavada.zdrojKontrola} {zavada.name}
+        </Text>
+
+        <Box
+          onClick={(e) => {
+            e.stopPropagation();
+            onStavChange?.(zavada.id, nextStav(zavada.stav));
+          }}
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "4px",
+            position: "relative",
+            flexShrink: 0,
+            width: "80px",
+            height: "32px",
+            backgroundColor: "var(--gray-4)",
+            borderRadius: "9999px",
+            cursor: "pointer",
+            userSelect: "none",
           }}
         >
-          <p
+          <Box
             style={{
-              fontWeight: "bold",
-              margin: 0,
+              position: "absolute",
+              top: "4px",
+              left: stavLeft[zavada.stav],
+              width: "24px",
+              height: "24px",
+              borderRadius: "50%",
+              backgroundColor:
+                zavada.stav !== "null" ? barva[zavada.stav] : "var(--gray-8)",
+              transition: "left 0.25s ease, background-color 0.25s ease",
             }}
-          >
-            {zavada.poradoveCislo}/{zavada.zdrojKontrola} {zavada.name}
-          </p>
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              onStavChange?.(zavada.id, nextStav(zavada.stav));
-            }}
-            style={{
-              position: "relative",
-              width: "80px",
-              height: "32px",
-              backgroundColor: "#e0e0e0",
-              borderRadius: "20px",
-              cursor: "pointer",
-              userSelect: "none",
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                top: "4px",
-                left: stavLeft[zavada.stav],
-                width: "24px",
-                height: "24px",
-                borderRadius: "50%",
-                backgroundColor:
-                  zavada.stav !== "null" ? barva[zavada.stav] : "#999",
-                transition: "left 0.25s ease, background-color 0.25s ease",
-              }}
-            />
-          </div>
-        </div>
-      }
+          />
+        </Box>
+      </Flex>
 
-      <div style={{ borderBottom: "1px dashed #ccc", marginBottom: "8px" }} />
+      <Separator size="4" my="2" />
 
-      <div
-        style={{
-          display: "flex",
-          gap: "12px",
-          marginTop: "8px",
-        }}
-      >
-        <p style={{ flex: 1, textAlign: "left" }}>
+      <Flex gap="3">
+        <Text style={{ flex: 1 }} size="2">
           {zavada.primaryDescription}
-        </p>
+        </Text>
         {zavada.foto ? (
           <img
             src={zavada.foto}
@@ -116,22 +94,24 @@ function ZavadaItem({
             }}
           />
         ) : (
-          <div
+          <Flex
+            align="center"
+            justify="center"
+            flexShrink="0"
+            width="80px"
+            height="80px"
             style={{
-              width: "80px",
-              height: "80px",
-              backgroundColor: "#eee",
-              borderRadius: "4px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              backgroundColor: "var(--gray-3)",
+              borderRadius: "var(--radius-2)",
             }}
           >
-            <p style={{ fontSize: "12px", color: "#999" }}>Bez fotky</p>
-          </div>
+            <Text size="1" color="gray">
+              Bez fotky
+            </Text>
+          </Flex>
         )}
-      </div>
-    </div>
+      </Flex>
+    </Card>
   );
 }
 

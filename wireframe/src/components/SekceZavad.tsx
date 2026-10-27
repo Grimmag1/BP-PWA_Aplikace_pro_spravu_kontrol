@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Zavada } from "../types.tsx";
 import ZavadaItem from "./ZavadaItem.tsx";
 import AddZavadaButton from "./AddZavadaButton.tsx";
+import { Box, Flex, Heading, Text } from "@radix-ui/themes";
 
 function SekceZavad({
   nazev,
@@ -19,34 +20,31 @@ function SekceZavad({
   const [rozbaleno, setRozbaleno] = useState(true);
 
   return (
-    <div>
-      <div
+    <Box>
+      <Flex
+        justify="between"
+        align="center"
+        px="3"
+        py="2"
         onClick={() => setRozbaleno(!rozbaleno)}
         style={{
-          display: "flex",
-          justifyContent: "space-between",
           cursor: "pointer",
-          backgroundColor: "#f0f0f0",
-          padding: "8px 12px",
+          backgroundColor: "var(--gray-3)",
+          borderRadius: "1px solid var(--gray-6)",
         }}
       >
-        <h2>{nazev}</h2>
-        <span>{rozbaleno ? "Skrýt" : "Zobrazit"}</span>
-      </div>
+        <Heading size="4">{nazev}</Heading>
+        <Text size="2" color="gray">
+          {rozbaleno ? "Skrýt" : "Zobrazit"}
+        </Text>
+      </Flex>
 
       {rozbaleno && (
-        <div>
+        <Flex direction="column" gap="2" mt="2">
           {zavady.length === 0 && (
-            <p
-              style={{
-                textAlign: "center",
-                color: "#999",
-                padding: "16px",
-                fontStyle: "italic",
-              }}
-            >
-              Zatím žádné závady
-            </p>
+            <Text align="center" color="gray" size="2" py="3">
+              <em>Zatím žádné závady</em>
+            </Text>
           )}
           {zavady.map((zavada) => (
             <ZavadaItem
@@ -55,11 +53,15 @@ function SekceZavad({
               onStavChange={onStavChange}
             />
           ))}
-        </div>
+        </Flex>
       )}
 
-      {showAddButton && <AddZavadaButton onBezFotky={onPridatZavadu} />}
-    </div>
+      {showAddButton && (
+        <Box mt="2">
+          <AddZavadaButton onBezFotky={onPridatZavadu} />
+        </Box>
+      )}
+    </Box>
   );
 }
 

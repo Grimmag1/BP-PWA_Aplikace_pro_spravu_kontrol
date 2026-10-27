@@ -1,10 +1,10 @@
 // src/components/HeaderStavby.tsx
 import type { Stavba, Zapis } from "../types.tsx";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { cs } from "date-fns/locale";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Flex, Heading, IconButton, Text } from "@radix-ui/themes";
+import { ArrowLeftIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 
 function HeaderStavby({
   stavba,
@@ -17,70 +17,40 @@ function HeaderStavby({
   const navigate = useNavigate();
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <button
-          onClick={() => navigate("/")}
+    <Flex direction="column" gap="2">
+      <Flex align="center" justify="between" gap="2">
+        <IconButton onClick={() => navigate("/")}>
+          <ArrowLeftIcon />
+        </IconButton>
+
+        <Heading size="6" align="center" style={{ flex: 1 }}>
+          {stavba.jmeno}
+        </Heading>
+
+        <IconButton onClick={() => navigate(`/stavba/${stavba.id}/info`)}>
+          <InfoCircledIcon />
+        </IconButton>
+      </Flex>
+
+      <Flex justify="between" align="center">
+        <Text weight="medium" style={{ whiteSpace: "nowrap" }}>
+          Kontrola č. {cisloZapisu}
+        </Text>
+
+        <input
+          type="date"
+          value={datum.toISOString().split("T")[0]}
+          onChange={(e) => setDatum(new Date(e.target.value))}
           style={{
-            background: "none",
             border: "none",
+            backgroundColor: "transparent",
+            fontSize: "14px",
             cursor: "pointer",
-            fontSize: "20px",
+            color: "var(--gray-11)",
           }}
-        >
-          ←
-        </button>
-
-        <h1 style={{ flex: 1, textAlign: "center" }}>{stavba.jmeno}</h1>
-
-        <button
-          onClick={() => navigate(`/stavba/${stavba.id}/info`)}
-          style={{
-            width: "30px",
-            height: "30px",
-            borderRadius: "6px",
-            backgroundColor: "white",
-            color: "black",
-            border: "2px solid black",
-            cursor: "pointer",
-            fontSize: "18px",
-            fontWeight: "bold",
-          }}
-        >
-          i
-        </button>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          whiteSpace: "nowrap",
-        }}
-      >
-        <p>Kontrola č. {cisloZapisu}</p>
-
-        <DatePicker
-          selected={datum}
-          onChange={(datum: Date | null) => datum && setDatum(datum)}
-          dateFormat="dd-mm-yyyy"
-          portalId="root"
-          withPortal
-          locale={cs}
-          customInput={
-            <span style={{ cursor: "pointer" }}>
-              {datum.toLocaleDateString("cs-CZ")}
-            </span>
-          }
         />
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }
 

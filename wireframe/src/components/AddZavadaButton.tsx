@@ -1,52 +1,22 @@
-import { useState } from "react";
+import { Button, DropdownMenu } from "@radix-ui/themes";
 
 function AddZavadaButton({ onBezFotky }: { onBezFotky?: () => void }) {
-  const [clicked, setClicked] = useState(false);
-
   return (
-    <>
-      {clicked && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "12px",
-          }}
-        >
-          <button onClick={() => setClicked(false)}>Fotoaparát</button>
-          <button onClick={() => setClicked(false)}>Galerie</button>
-          <button
-            onClick={() => {
-              setClicked(false);
-              onBezFotky?.();
-            }}
-          >
-            Bez fotky
-          </button>
-          <button onClick={() => setClicked(false)}>X</button>
-        </div>
-      )}
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <Button size="4" variant="soft" style={{ width: "100%" }}>
+          +
+        </Button>
+      </DropdownMenu.Trigger>
 
-      <button
-        onClick={() => setClicked(true)}
-        style={{
-          width: "100%",
-          padding: "16px",
-          borderRadius: "0 0 8px 8px",
-          fontSize: "32px",
-          cursor: "pointer",
-          border: "none",
-          backgroundColor: "#e0e0e0",
-        }}
+      <DropdownMenu.Content
+        style={{ width: "var(--radix-dropdown-menu-trigger-width)" }}
       >
-        +
-      </button>
-    </>
+        <DropdownMenu.Item disabled>Fotoaparát</DropdownMenu.Item>
+        <DropdownMenu.Item disabled>Galerie</DropdownMenu.Item>
+        <DropdownMenu.Item onSelect={onBezFotky}>Bez Fotky</DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   );
 }
 

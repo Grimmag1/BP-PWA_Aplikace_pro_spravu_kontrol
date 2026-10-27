@@ -5,6 +5,7 @@ import { mockStavby } from "../mockdata.ts";
 import { useParams, useNavigate, useOutlet } from "react-router-dom";
 import { useState } from "react";
 import type { Zavada } from "../types.tsx";
+import { Flex } from "@radix-ui/themes";
 
 export type ZapisContext = {
   zavady: Zavada[];
@@ -104,7 +105,7 @@ function ZapisScreen() {
   if (outlet) return outlet;
 
   return (
-    <div>
+    <Flex direction="column" gap="4" p="4">
       <HeaderStavby stavba={stavba} cisloZapisu={noveCisloZapisu} />
       <SekceZavad
         nazev="Závady z předchozích kontrol"
@@ -129,7 +130,7 @@ function ZapisScreen() {
         onPridatZavadu={handlePridatZavadu}
         showAddButton
       />
-    </div>
+    </Flex>
   );
 }
 
