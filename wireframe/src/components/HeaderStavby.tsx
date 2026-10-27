@@ -40,7 +40,11 @@ function HeaderStavby({
         <input
           type="date"
           value={datum.toISOString().split("T")[0]}
-          onChange={(e) => setDatum(new Date(e.target.value))}
+          onChange={(e) => {
+            if (e.target.value) {
+              setDatum(new Date(e.target.value));
+            }
+          }}
           style={{
             border: "none",
             backgroundColor: "transparent",
