@@ -5,7 +5,7 @@ import { mockStavby } from "../mockdata.ts";
 import { useParams, useNavigate, useOutlet } from "react-router-dom";
 import { useState } from "react";
 import type { Zavada } from "../types.tsx";
-import { Flex } from "@radix-ui/themes";
+import { Flex, Box } from "@radix-ui/themes";
 
 export type ZapisContext = {
   zavady: Zavada[];
@@ -106,13 +106,24 @@ function ZapisScreen() {
 
   return (
     <Flex direction="column" gap="4" p="4">
-      <HeaderStavby stavba={stavba} cisloZapisu={noveCisloZapisu} />
+      <Box
+        style={{
+          position: "sticky",
+          top: 0,
+          backgroundColor: "var(--color-background)",
+          zIndex: 10,
+          paddingBottom: "8px",
+        }}
+      >
+        <HeaderStavby stavba={stavba} cisloZapisu={noveCisloZapisu} />
+      </Box>
       <SekceZavad
         nazev="Závady z předchozích kontrol"
         zavady={predchoziZavady}
         onStavChange={(id, stav) =>
           handleStavChange(setPredchoziZavady, id, stav)
         }
+        barvaSekce="var(--red-9)"
       />
       <SekceZavad
         nazev="Povinné závady"
@@ -120,6 +131,7 @@ function ZapisScreen() {
         onStavChange={(id, stav) =>
           handleStavChange(setPovinneZavady, id, stav)
         }
+        barvaSekce="var(--orange-9)"
       />
       <SekceZavad
         nazev="Závady z aktuální kontroly"
@@ -129,6 +141,7 @@ function ZapisScreen() {
         }
         onPridatZavadu={handlePridatZavadu}
         showAddButton
+        barvaSekce="var(--blue-9)"
       />
     </Flex>
   );

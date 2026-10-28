@@ -33,6 +33,16 @@ function ZavadaInfoScreen() {
     zavada.secondaryDescription,
   );
 
+  const [foto, setFoto] = useState<string | null>(zavada.foto);
+
+  const handleFotoVybrat = (e) => {
+    const soubor = e.target.files?.[0];
+    if (soubor) {
+      const url = URL.createObjectURL(soubor);
+      setFoto(url);
+    }
+  };
+
   const zmenaProvedena =
     name !== zavada.name ||
     primaryDescription !== zavada.primaryDescription ||
@@ -44,6 +54,7 @@ function ZavadaInfoScreen() {
       name,
       primaryDescription,
       secondaryDescription,
+      foto,
     });
     navigate(-1);
   };
@@ -107,10 +118,38 @@ function ZavadaInfoScreen() {
         rows={3}
       />
 
-      <Card style={{ flex: 1, minHeight: 160 }}>
-        <Flex height="100%" align="center" justify="center">
-          <Text color="gray">Vložit foto/otevřít kameru</Text>
-        </Flex>
+      <Card
+        style={{
+          flex: 1,
+          minHeight: 160,
+          cursor: "pointer",
+          position: "relative",
+        }}
+        onClick={() => document.getElementById("foto-input")?.click()}
+      >
+        <input
+          id="foto-input"
+          type="file"
+          accept="image/*"
+          onChange={handleFotoVybrat}
+          style={{ display: "none" }}
+        />
+        {foto ? (
+          <img
+            src={foto}
+            alt="foto závady"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              borderRadius: "var(--radius-2",
+            }}
+          />
+        ) : (
+          <Flex height="100%" align="center" justify="center">
+            <Text color="gray">Vložit foto/otevřít kameru</Text>
+          </Flex>
+        )}
       </Card>
 
       <Flex gap="3">

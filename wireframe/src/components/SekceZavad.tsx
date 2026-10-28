@@ -10,12 +10,14 @@ function SekceZavad({
   showAddButton = false,
   onStavChange,
   onPridatZavadu,
+  barvaSekce,
 }: {
   nazev: string;
   zavady: Zavada[];
   showAddButton?: boolean;
   onStavChange?: (id: number, stav: Zavada["stav"]) => void;
   onPridatZavadu?: () => void;
+  barvaSekce?: string;
 }) {
   const [rozbaleno, setRozbaleno] = useState(true);
 
@@ -39,28 +41,38 @@ function SekceZavad({
         </Text>
       </Flex>
 
-      {rozbaleno && (
-        <Flex direction="column" gap="2" mt="2">
-          {zavady.length === 0 && (
-            <Text align="center" color="gray" size="2" py="3">
-              <em>Zatím žádné závady</em>
-            </Text>
-          )}
-          {zavady.map((zavada) => (
-            <ZavadaItem
-              key={zavada.id}
-              zavada={zavada}
-              onStavChange={onStavChange}
-            />
-          ))}
-        </Flex>
-      )}
+      <Box
+        style={{
+          backgroundColor: barvaSekce
+            ? `color-mix(in srgb, ${barvaSekce} 10%, transparent)`
+            : undefined,
+          borderRadius: "var(--radius-3)",
+          padding: barvaSekce ? "8px" : undefined,
+        }}
+      >
+        {rozbaleno && (
+          <Flex direction="column" gap="2" mt="2">
+            {zavady.length === 0 && (
+              <Text align="center" color="gray" size="2" py="3">
+                <em>Zatím žádné závady</em>
+              </Text>
+            )}
+            {zavady.map((zavada) => (
+              <ZavadaItem
+                key={zavada.id}
+                zavada={zavada}
+                onStavChange={onStavChange}
+              />
+            ))}
+          </Flex>
+        )}
 
-      {showAddButton && (
-        <Box mt="2">
-          <AddZavadaButton onBezFotky={onPridatZavadu} />
-        </Box>
-      )}
+        {showAddButton && (
+          <Box mt="2">
+            <AddZavadaButton onBezFotky={onPridatZavadu} />
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 }
