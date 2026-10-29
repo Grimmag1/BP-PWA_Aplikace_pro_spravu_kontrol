@@ -2,6 +2,14 @@ import type { Stavba } from "../types";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {
+  HomeIcon,
+  PersonIcon,
+  MobileIcon,
+  CalendarIcon,
+  InfoCircledIcon,
+} from "@radix-ui/react-icons";
+import { Card, Button, Flex, IconButton, Text } from "@radix-ui/themes";
 
 const HOLD_DELAY = 1000;
 
@@ -30,72 +38,78 @@ function StavbaItem({
   };
 
   return (
-    <div
+    <Card
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onTouchStart={handleMouseDown}
       onTouchEnd={handleMouseUp}
       style={{
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-        padding: "12px",
-        marginBottom: "8px",
-        backgroundColor: pressed ? "#d0d0d0" : "#fff",
+        backgroundColor: pressed ? "var(--gray-3)" : undefined,
         transition: pressed
           ? `background-color ${HOLD_DELAY}ms ease`
           : "background-color 0.1s ease",
         userSelect: "none",
-        position: "relative",
       }}
     >
-      <p style={{ fontWeight: "bold", fontSize: "16px", marginBottom: "4px" }}>
-        {stavba.jmeno}
-      </p>
+      <Flex justify="between" align="center" mb="2">
+        <Text weigh="bold" size="4">
+          {stavba.jmeno}
+        </Text>
+        <Flex align="center" gap="2">
+          <Flex
+            align="center"
+            justify="center"
+            style={{
+              width: "60px",
+              height: "24px",
+              border: "1px solid var(--gray-6)",
+              borderRadius: "var(--radius-2)",
+            }}
+          >
+            <CalendarIcon />
+          </Flex>
+          <IconButton
+            variant="soft"
+            size="1"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/stavba/${stavba.id}/info`);
+            }}
+          >
+            <InfoCircledIcon />
+          </IconButton>
+        </Flex>
+      </Flex>
 
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate(`/stavba/${stavba.id}/info`);
-        }}
-        style={{
-          position: "absolute",
-          top: "12px",
-          right: "12px",
-          width: "30px",
-          height: "30px",
-          borderRadius: "50%",
-          backgroundColor: "#6a0dad",
-          color: "white",
-          border: "none",
-          cursor: "pointer",
-          fontSize: "17px",
-          fontWeight: "bold",
-        }}
-      >
-        i
-      </button>
+      <Flex align="center" gap="2" mb="1">
+        <HomeIcon color="gray" />
+        <Text size="2">{stavba.adresa}</Text>
+      </Flex>
 
-      <p style={{ color: "#666", fontSize: "14px" }}>{stavba.adresa}</p>
-      <p style={{ color: "#666", fontSize: "14px" }}>
-        Zhotovitel: {stavba.zhotovitel}
-      </p>
-      <button
+      <Flex align="center" gap="2" mb="1">
+        <PersonIcon color="gray" />
+        <Text size="2">{stavba.zhotovitel}</Text>
+      </Flex>
+
+      <Flex align="center" gap="2" mb="1">
+        <MobileIcon color="gray" />
+        <Flex flex="1" justify="between">
+          <Text size="2">Jan Novak</Text>
+          <Text size="2" color="gray">
+            +420 123 456 789
+          </Text>
+        </Flex>
+      </Flex>
+
+      <Button
         onClick={() => onNovyZapis(stavba.id)}
         style={{
-          marginTop: "8px",
           width: "100%",
-          padding: "8px",
-          backgroundColor: "#6a0dad",
-          color: "white",
-          border: "none",
-          borderRadius: "6px",
-          cursor: "pointer",
-          fontSize: "14px",
         }}
       >
         Nový zápis
-      </button>
-    </div>
+      </Button>
+    </Card>
   );
 }
 
