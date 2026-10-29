@@ -23,5 +23,8 @@ export type Stavba = {
   zhotovitel: string;
   adresa: string;
   status: "aktivní" | "ukončená";
+  kontaktOsoba: string;
+  kontaktTelefon: string;
+  dnyKontroly: number[];
   zapisy: Zapis[];
 };
