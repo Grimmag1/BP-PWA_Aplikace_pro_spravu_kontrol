@@ -7,6 +7,9 @@ export const mockStavby: Stavba[] = [
     zhotovitel: "Firma XY s.r.o.",
     adresa: "Brno, Moravské náměstí 1",
     status: "aktivní",
+    kontaktOsoba: "Jan Novák",
+    kontaktTelefon: "+420 731 123 456",
+    dnyKontroly: [0, 3],
     zapisy: [
       {
         id: 1,
@@ -293,6 +296,9 @@ export const mockStavby: Stavba[] = [
     zhotovitel: "Stavby Novák a.s.",
     adresa: "Praha, Václavské náměstí 5",
     status: "aktivní",
+    kontaktOsoba: "Marie Svobodová",
+    kontaktTelefon: "+420 602 987 654",
+    dnyKontroly: [1],
     zapisy: [
       {
         id: 1,
@@ -568,6 +574,9 @@ export const mockStavby: Stavba[] = [
     zhotovitel: "Build Pro s.r.o.",
     adresa: "Ostrava, Náměstí Republiky 3",
     status: "ukončená",
+    kontaktOsoba: "Petr Dvořák",
+    kontaktTelefon: "+420 777 456 789",
+    dnyKontroly: [2, 4],
     zapisy: [
       {
         id: 1,
