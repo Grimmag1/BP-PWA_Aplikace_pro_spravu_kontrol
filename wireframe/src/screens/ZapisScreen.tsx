@@ -63,7 +63,7 @@ function ZapisScreen() {
     name: "",
     primaryDescription: "",
     secondaryDescription: "",
-    foto: null,
+    foto: [],
     stav: "nesoulad",
   });
 
@@ -85,6 +85,7 @@ function ZapisScreen() {
               name: zavada.name,
               primaryDescription: zavada.primaryDescription,
               secondaryDescription: zavada.secondaryDescription,
+              foto: zavada.foto,
             }
           : z,
       );

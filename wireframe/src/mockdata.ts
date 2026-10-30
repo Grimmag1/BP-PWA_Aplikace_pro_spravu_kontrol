@@ -24,7 +24,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace BOZP není přítomna na stavbě.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -35,7 +35,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Záznamy o vstupním školení pracovníků.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -46,7 +46,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Hasicí přístroje nejsou v požadovaném stavu.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -59,7 +59,7 @@ export const mockStavby: Stavba[] = [
               "Výkop v severní části stavby není řádně zapažen.",
             secondaryDescription:
               "Hloubka výkopu přesahuje 1,5 m bez zajištění.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -71,7 +71,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Část pracovníků nepracuje v reflexních vestách.",
             secondaryDescription: "Týká se 3 pracovníků na jižní straně.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -89,7 +89,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Hasicí přístroje nejsou v požadovaném stavu.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -102,7 +102,7 @@ export const mockStavby: Stavba[] = [
               "Výkop v severní části stavby není řádně zapažen.",
             secondaryDescription:
               "Hloubka výkopu přesahuje 1,5 m bez zajištění.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -114,7 +114,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Část pracovníků nepracuje v reflexních vestách.",
             secondaryDescription: "Týká se 3 pracovníků na jižní straně.",
-            foto: null,
+            foto: [],
             stav: "v_procesu",
           },
           {
@@ -125,7 +125,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace BOZP není přítomna na stavbě.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -136,7 +136,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Záznamy o vstupním školení pracovníků.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -147,7 +147,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Hasicí přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -160,7 +160,7 @@ export const mockStavby: Stavba[] = [
               "Oplocení staveniště nedosahuje předepsané výšky 1,8 m.",
             secondaryDescription:
               "Změřeno na třech místech, průměrná výška 1,4 m.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -172,7 +172,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Elektrické vedení není chráněno před mechanickým poškozením.",
             secondaryDescription: "AI vygenerovaný popis čeká na potvrzení.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -191,7 +191,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Výkop v severní části stavby není řádně zapažen.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -203,7 +203,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Část pracovníků nepracuje v reflexních vestách.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -215,7 +215,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Oplocení staveniště nedosahuje předepsané výšky 1,8 m.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -227,7 +227,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Elektrické vedení není chráněno před mechanickým poškozením.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "v_procesu",
           },
           {
@@ -238,7 +238,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace BOZP je přítomna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -249,7 +249,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Záznamy o školení jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -260,7 +260,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Jeden hasicí přístroj má prošlou revizi.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -272,7 +272,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Pracovník pracuje ve výšce bez záchytného postroje.",
             secondaryDescription: "Výška přesahuje 1,5 m, postroj není použit.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -283,7 +283,7 @@ export const mockStavby: Stavba[] = [
             name: "Poškozené lešení",
             primaryDescription: "Lešení v západní části má poškozené spojky.",
             secondaryDescription: "Celkem 4 poškozené spojky na 2. patře.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -313,7 +313,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace chybí.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -324,7 +324,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -335,7 +335,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -346,7 +346,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí ochranné zábradlí",
             primaryDescription: "Zábradlí chybí na východním schodišti.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -357,7 +357,7 @@ export const mockStavby: Stavba[] = [
             name: "Nevhodné skladování materiálu",
             primaryDescription: "Materiál je skladován v průchodové trase.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -375,7 +375,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace stále chybí.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -386,7 +386,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí ochranné zábradlí",
             primaryDescription: "Zábradlí stále chybí.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -397,7 +397,7 @@ export const mockStavby: Stavba[] = [
             name: "Nevhodné skladování materiálu",
             primaryDescription: "Materiál stále blokuje průchod.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "v_procesu",
           },
           {
@@ -408,7 +408,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je nyní přítomna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -419,7 +419,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -430,7 +430,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -441,7 +441,7 @@ export const mockStavby: Stavba[] = [
             name: "Poškozená přilba pracovníka",
             primaryDescription: "Pracovník č. 3 má prasklou přilbu.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -453,7 +453,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Jámy v severní části nejsou zakryty ani ohrazeny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -471,7 +471,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí ochranné zábradlí",
             primaryDescription: "Zábradlí bylo částečně opraveno.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -482,7 +482,7 @@ export const mockStavby: Stavba[] = [
             name: "Nevhodné skladování materiálu",
             primaryDescription: "Materiál je stále částečně v průchodu.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -493,7 +493,7 @@ export const mockStavby: Stavba[] = [
             name: "Poškozená přilba pracovníka",
             primaryDescription: "Přilba nebyla vyměněna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -504,7 +504,7 @@ export const mockStavby: Stavba[] = [
             name: "Nezakryté jámy",
             primaryDescription: "Jámy stále nejsou zajištěny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "v_procesu",
           },
           {
@@ -515,7 +515,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -526,7 +526,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -537,7 +537,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Jeden přístroj má prošlou revizi.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -549,7 +549,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Pracoviště v podzemní části nemá dostatečné osvětlení.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -561,7 +561,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Zóny s pohybem těžké techniky nejsou vyznačeny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -591,7 +591,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace chybí.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -602,7 +602,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení neproběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -613,7 +613,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje chybí.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -624,7 +624,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí osobní ochranné prostředky",
             primaryDescription: "Pracovníci nemají přiděleny OOP.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -635,7 +635,7 @@ export const mockStavby: Stavba[] = [
             name: "Poškozené komunikace",
             primaryDescription: "Staveniště nemá bezpečné komunikace pro pěší.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -653,7 +653,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace doplněna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -664,7 +664,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -675,7 +675,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje doplněny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -686,7 +686,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí osobní ochranné prostředky",
             primaryDescription: "OOP přiděleny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -697,7 +697,7 @@ export const mockStavby: Stavba[] = [
             name: "Poškozené komunikace",
             primaryDescription: "Komunikace stále nevyhovují.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -708,7 +708,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -719,7 +719,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -730,7 +730,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -742,7 +742,7 @@ export const mockStavby: Stavba[] = [
             primaryDescription:
               "Výstražné značky nejsou umístěny dle předpisů.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -760,7 +760,7 @@ export const mockStavby: Stavba[] = [
             name: "Poškozené komunikace",
             primaryDescription: "Komunikace opraveny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -771,7 +771,7 @@ export const mockStavby: Stavba[] = [
             name: "Nedostatečné značení",
             primaryDescription: "Značení doplněno.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -782,7 +782,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -793,7 +793,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -804,7 +804,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -815,7 +815,7 @@ export const mockStavby: Stavba[] = [
             name: "Závěrečná kontrola pracoviště",
             primaryDescription: "Pracoviště splňuje všechny požadavky.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -826,7 +826,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola odvodnění",
             primaryDescription: "Odvodnění staveniště je funkční.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -837,7 +837,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola dočasných konstrukcí",
             primaryDescription: "Dočasné konstrukce odstraněny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -867,7 +867,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je přítomna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -878,7 +878,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -889,7 +889,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -900,7 +900,7 @@ export const mockStavby: Stavba[] = [
             name: "Nezajištěný výkop",
             primaryDescription: "Výkop na jižní straně není ohrazen.",
             secondaryDescription: "Výkop je hluboký 2 m bez ohrazení.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -911,7 +911,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí výstražné značení",
             primaryDescription: "Na vjezdu chybí výstražné cedule.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -929,7 +929,7 @@ export const mockStavby: Stavba[] = [
             name: "Nezajištěný výkop",
             primaryDescription: "Výkop byl částečně ohrazen.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "v_procesu",
           },
           {
@@ -940,7 +940,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí výstražné značení",
             primaryDescription: "Značení bylo doplněno.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -951,7 +951,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je přítomna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -962,7 +962,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -973,7 +973,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Jeden přístroj chybí.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -984,7 +984,7 @@ export const mockStavby: Stavba[] = [
             name: "Poškozené lešení",
             primaryDescription: "Lešení na severní straně má uvolněné příčle.",
             secondaryDescription: "Zjištěno 6 uvolněných příčlí.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -1002,7 +1002,7 @@ export const mockStavby: Stavba[] = [
             name: "Nezajištěný výkop",
             primaryDescription: "Výkop je nyní řádně ohrazen.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1013,7 +1013,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroj byl doplněn.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1024,7 +1024,7 @@ export const mockStavby: Stavba[] = [
             name: "Poškozené lešení",
             primaryDescription: "Lešení nebylo opraveno.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -1035,7 +1035,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je přítomna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1046,7 +1046,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1057,7 +1057,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1068,7 +1068,7 @@ export const mockStavby: Stavba[] = [
             name: "Nedostatečné osvětlení",
             primaryDescription: "Osvětlení v podzemní části je nedostatečné.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -1098,7 +1098,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace chybí.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -1109,7 +1109,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1120,7 +1120,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1131,7 +1131,7 @@ export const mockStavby: Stavba[] = [
             name: "Pracovníci bez přileb",
             primaryDescription: "Tři pracovníci pracují bez ochranných přileb.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -1142,7 +1142,7 @@ export const mockStavby: Stavba[] = [
             name: "Nevyznačené únikové cesty",
             primaryDescription: "Únikové cesty nejsou označeny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -1153,7 +1153,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí lékárnička",
             primaryDescription: "Na pracovišti chybí lékárnička první pomoci.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -1171,7 +1171,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace doplněna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1182,7 +1182,7 @@ export const mockStavby: Stavba[] = [
             name: "Pracovníci bez přileb",
             primaryDescription: "Přilby byly rozdány.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1193,7 +1193,7 @@ export const mockStavby: Stavba[] = [
             name: "Nevyznačené únikové cesty",
             primaryDescription: "Cesty stále nejsou označeny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -1204,7 +1204,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí lékárnička",
             primaryDescription: "Lékárnička byla doplněna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1215,7 +1215,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1226,7 +1226,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1237,7 +1237,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1248,7 +1248,7 @@ export const mockStavby: Stavba[] = [
             name: "Nestabilní jeřáb",
             primaryDescription: "Věžový jeřáb vykazuje nestabilitu základů.",
             secondaryDescription: "Základová deska je popraskána.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -1266,7 +1266,7 @@ export const mockStavby: Stavba[] = [
             name: "Nevyznačené únikové cesty",
             primaryDescription: "Cesty byly označeny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1277,7 +1277,7 @@ export const mockStavby: Stavba[] = [
             name: "Nestabilní jeřáb",
             primaryDescription: "Jeřáb byl zastaven, čeká na opravu.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "v_procesu",
           },
           {
@@ -1288,7 +1288,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1299,7 +1299,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1310,7 +1310,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1321,7 +1321,7 @@ export const mockStavby: Stavba[] = [
             name: "Nevhodné uskladnění chemikálií",
             primaryDescription: "Chemikálie nejsou uskladněny dle předpisů.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -1351,7 +1351,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je přítomna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1362,7 +1362,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení neproběhlo u 2 pracovníků.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -1373,7 +1373,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1384,7 +1384,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí záchytná síť",
             primaryDescription: "Na lešení chybí záchytná síť.",
             secondaryDescription: "Výška lešení je 8 m.",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -1395,7 +1395,7 @@ export const mockStavby: Stavba[] = [
             name: "Poškozené ochranné pomůcky",
             primaryDescription: "Část ochranných pomůcek je poškozena.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -1413,7 +1413,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo u všech pracovníků.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1424,7 +1424,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí záchytná síť",
             primaryDescription: "Síť stále chybí.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -1435,7 +1435,7 @@ export const mockStavby: Stavba[] = [
             name: "Poškozené ochranné pomůcky",
             primaryDescription: "Pomůcky byly vyměněny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1446,7 +1446,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je přítomna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1457,7 +1457,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1468,7 +1468,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1479,7 +1479,7 @@ export const mockStavby: Stavba[] = [
             name: "Neuklizené pracoviště",
             primaryDescription: "Na pracovišti leží nevyužitý materiál.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -1490,7 +1490,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí ochrana výkopů",
             primaryDescription: "Výkopy podél budovy nejsou chráněny.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],
@@ -1508,7 +1508,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí záchytná síť",
             primaryDescription: "Síť byla nainstalována.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1519,7 +1519,7 @@ export const mockStavby: Stavba[] = [
             name: "Neuklizené pracoviště",
             primaryDescription: "Pracoviště stále není uklizeno.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
           {
@@ -1530,7 +1530,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí ochrana výkopů",
             primaryDescription: "Ochrana byla doplněna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1541,7 +1541,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola BOZP dokumentace",
             primaryDescription: "Dokumentace je přítomna.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1552,7 +1552,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola vstupního školení",
             primaryDescription: "Školení proběhlo.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1563,7 +1563,7 @@ export const mockStavby: Stavba[] = [
             name: "Kontrola hasicích přístrojů",
             primaryDescription: "Přístroje jsou v pořádku.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "soulad",
           },
           {
@@ -1574,7 +1574,7 @@ export const mockStavby: Stavba[] = [
             name: "Chybí zábradlí na schodišti",
             primaryDescription: "Dočasné schodiště nemá zábradlí.",
             secondaryDescription: "",
-            foto: null,
+            foto: [],
             stav: "nesoulad",
           },
         ],

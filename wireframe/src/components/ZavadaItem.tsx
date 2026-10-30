@@ -1,6 +1,6 @@
 import type { Zavada } from "../types.tsx";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Box, Card, Flex, Separator, Text } from "@radix-ui/themes";
+import { Box, Card, Flex, Separator, Text, Badge } from "@radix-ui/themes";
 
 function ZavadaItem({
   zavada,
@@ -84,22 +84,28 @@ function ZavadaItem({
         </Flex>
 
         <Separator size="4" my="2" />
-
         <Flex gap="3">
           <Text style={{ flex: 1 }} size="2">
             {zavada.primaryDescription}
           </Text>
-          {zavada.foto ? (
-            <img
-              src={zavada.foto}
-              alt="foto závady"
-              style={{
-                width: "80px",
-                height: "80px",
-                objectFit: "cover",
-                borderRadius: "4px",
-              }}
-            />
+          {zavada.foto.length > 0 ? (
+            <Box style={{ position: "relative", flexShrink: 0 }}>
+              <img
+                src={zavada.foto[0]}
+                alt="foto zavady"
+                style={{
+                  width: 80,
+                  height: 80,
+                  objectFit: "cover",
+                  borderRadius: 4,
+                }}
+              />
+              {zavada.foto.length > 1 && (
+                <Badge style={{ position: "absolute", bottom: 4, right: 4 }}>
+                  +{zavada.foto.length - 1}
+                </Badge>
+              )}
+            </Box>
           ) : (
             <Flex
               align="center"
