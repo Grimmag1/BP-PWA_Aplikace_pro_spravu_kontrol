@@ -80,12 +80,18 @@ function ZavadaInfoScreen() {
     <Flex direction="column" gap="3" p="4" style={{ minHeight: "100svh" }}>
       <Flex justify="between" align="center">
         <Flex align="baseline" gap="2">
-          <Heading size="5">Závada č. {zavada.poradoveCislo}</Heading>
-          <Text size="2" color="gray">
-            {zavada.zdrojKontrola !== null
-              ? `ze zápisu č. ${zavada.zdrojKontrola}`
-              : "z aktuálního zápisu"}
-          </Text>
+          <Heading size="5">
+            {zavada.typ === "povinna"
+              ? `Povinná závada č. ${zavada.poradoveCislo})`
+              : `Závada č. ${zavada.poradoveCislo}`}
+          </Heading>
+          {zavada.typ !== "povinna" && (
+            <Text size="2" color="gray">
+              {zavada.typ === "predchozi"
+                ? `ze zápisu č. ${zavada.zdrojKontrola}`
+                : "z aktuálního zápisu"}
+            </Text>
+          )}
         </Flex>
 
         <IconButton variant="ghost" color="gray" onClick={handleZavrit}>

@@ -6,7 +6,7 @@ export type Zavada = {
   name: string;
   primaryDescription: string;
   secondaryDescription: string;
-  foto: string | null;
+  foto: string[];
   stav: "soulad" | "nesoulad" | "v_procesu" | "null";
 };
 

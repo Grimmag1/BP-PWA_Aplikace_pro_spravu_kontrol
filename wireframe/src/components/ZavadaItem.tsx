@@ -32,6 +32,11 @@ function ZavadaItem({
     null: "4px",
   };
 
+  const cislo =
+    zavada.typ === "povinna"
+      ? `${zavada.poradoveCislo})`
+      : `${zavada.poradoveCislo}/${zavada.zdrojKontrola}`;
+
   return (
     <div
       style={{
@@ -48,7 +53,7 @@ function ZavadaItem({
       >
         <Flex align="center" justify="between" gap="3">
           <Text weight="bold">
-            {zavada.poradoveCislo}/{zavada.zdrojKontrola} {zavada.name}
+            {cislo} {zavada.name}
           </Text>
 
           <Box

@@ -21,12 +21,15 @@ function ZapisScreen() {
   const noveCisloZapisu = stavba.zapisy.length + 1;
 
   const initialPredchoziZavady: Zavada[] = posledniZapis.zavady
-    .filter((z) => z.stav === "nesoulad" || z.stav === "v_procesu")
+    .filter(
+      (z) =>
+        z.typ !== "povinna" &&
+        (z.stav === "nesoulad" || z.stav === "v_procesu"),
+    )
     .map((z) => ({
       ...z,
       typ: "predchozi" as const,
       stav: "nesoulad" as const,
-      zdrojKontrola: z.zdrojKontrola ?? posledniZapis.poradoveCislo,
     }));
 
   const initialPovinneZavady: Zavada[] = posledniZapis.zavady
@@ -50,6 +53,16 @@ function ZapisScreen() {
     );
   };
 
+  const dalsiCislo =
+    Math.max(
+      0,
+      ...stavba.zapisy
+        .flatMap((zp) => zp.zavady)
+        .filter((z) => z.typ !== "povinna")
+        .map((z) => z.poradoveCislo),
+      ...aktualniZavady.map((z) => z.poradoveCislo),
+    ) + 1;
+
   const dalsiZavada = (foto: string[] = []): Zavada => ({
     id:
       Math.max(
@@ -57,8 +70,8 @@ function ZapisScreen() {
         ...posledniZapis.zavady.map((z) => z.id),
         ...aktualniZavady.map((z) => z.id),
       ) + 1,
-    poradoveCislo: povinneZavady.length + aktualniZavady.length + 1,
-    zdrojKontrola: null,
+    poradoveCislo: dalsiCislo,
+    zdrojKontrola: noveCisloZapisu,
     typ: "nova",
     name: "",
     primaryDescription: "",
