@@ -1,10 +1,14 @@
-import { useNavigate, useParams, useOutletContext } from "react-router-dom";
+import {
+  useNavigate,
+  useParams,
+  useOutletContext,
+  useLocation,
+} from "react-router-dom";
 import { useState } from "react";
 import type { ZapisContext } from "./ZapisScreen";
 import {
   Box,
   Button,
-  Card,
   Flex,
   Heading,
   IconButton,
@@ -15,13 +19,14 @@ import {
 import FotoGalerie from "../components/FotoGalerie";
 
 function ZavadaInfoScreen() {
+  const location = useLocation();
   const { zavadaId } = useParams();
   const { zavady, dalsiZavada, ulozitZavadu } =
     useOutletContext<ZapisContext>();
   const navigate = useNavigate();
 
   const [novaZavada] = useState(() =>
-    zavadaId === "nova" ? dalsiZavada() : null,
+    zavadaId === "nova" ? dalsiZavada(location.state?.foto) : null,
   );
 
   const zavada = novaZavada ?? zavady.find((z) => z.id === Number(zavadaId))!;

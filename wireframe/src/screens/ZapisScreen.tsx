@@ -9,7 +9,7 @@ import { Flex, Box } from "@radix-ui/themes";
 
 export type ZapisContext = {
   zavady: Zavada[];
-  dalsiZavada: () => Zavada;
+  dalsiZavada: (foto?: string[]) => Zavada;
   ulozitZavadu: (zavada: Zavada) => void;
 };
 
@@ -50,7 +50,7 @@ function ZapisScreen() {
     );
   };
 
-  const dalsiZavada = (): Zavada => ({
+  const dalsiZavada = (foto: string[] = []): Zavada => ({
     id:
       Math.max(
         0,
@@ -63,7 +63,7 @@ function ZapisScreen() {
     name: "",
     primaryDescription: "",
     secondaryDescription: "",
-    foto: [],
+    foto,
     stav: "nesoulad",
   });
 
@@ -93,8 +93,8 @@ function ZapisScreen() {
     setPovinneZavady(upravit);
   };
 
-  const handlePridatZavadu = () => {
-    navigate(`/stavba/${stavbaId}/zapis/zavada/nova`);
+  const handlePridatZavadu = (foto: string[]) => {
+    navigate(`/stavba/${stavbaId}/zapis/zavada/nova`, { state: { foto } });
   };
 
   const outlet = useOutlet({

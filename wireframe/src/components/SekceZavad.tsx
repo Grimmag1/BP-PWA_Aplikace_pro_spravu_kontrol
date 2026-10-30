@@ -16,7 +16,7 @@ function SekceZavad({
   zavady: Zavada[];
   showAddButton?: boolean;
   onStavChange?: (id: number, stav: Zavada["stav"]) => void;
-  onPridatZavadu?: () => void;
+  onPridatZavadu?: (foto: string[]) => void;
   barvaSekce?: string;
 }) {
   const [rozbaleno, setRozbaleno] = useState(true);
@@ -69,7 +69,7 @@ function SekceZavad({
 
         {showAddButton && (
           <Box mt="2">
-            <AddZavadaButton onBezFotky={onPridatZavadu} />
+            <AddZavadaButton onPridat={onPridatZavadu} />
           </Box>
         )}
       </Box>
