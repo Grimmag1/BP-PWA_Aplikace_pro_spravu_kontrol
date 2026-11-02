@@ -125,7 +125,9 @@ function ZapisScreen() {
   };
 
   const pripravitSouhrn = () => {
-    const nesouladPovinne = povinneZavady.filter((z) => z.stav === "nesoulad");
+    const nesouladPovinne = povinneZavady.filter(
+      (z) => z.stav === "nesoulad" || z.stav === "v_procesu",
+    );
     setAktualniZavady((prev) => {
       const zbyle = prev.filter(
         (z) =>
@@ -161,7 +163,7 @@ function ZapisScreen() {
           primaryDescription: p.primaryDescription,
           secondaryDescription: p.secondaryDescription,
           foto: p.foto,
-          stav: "nesoulad" as const,
+          stav: p.stav,
         }));
       return [...zbyle, ...nove];
     });

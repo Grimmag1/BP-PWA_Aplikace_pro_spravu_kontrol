@@ -112,36 +112,37 @@ function ZavadaInfoScreen() {
                 : "z aktuálního zápisu"}
             </Text>
           )}
-          <DropdownMenu.Root modal={false}>
-            <DropdownMenu.Trigger>
-              <Button
-                size="3"
-                variant="soft"
-                color={barva[stav]}
-                style={{ justifyContent: "space-between" }}
-              >
-                {stavLabel[stav]}
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content
-              style={{ width: "var(--radix-dropdown-menu-trigger-width" }}
-            >
-              {MOZNOSTI.map((s) => (
-                <DropdownMenu.Item
-                  key={s}
-                  color={barva[s]}
-                  onSelect={() => setStav(s)}
-                >
-                  {stavLabel[s]}
-                </DropdownMenu.Item>
-              ))}
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
         </Flex>
 
         <IconButton onClick={handleZavrit}>X</IconButton>
       </Flex>
+
+      <DropdownMenu.Root modal={false}>
+        <DropdownMenu.Trigger>
+          <Button
+            size="3"
+            variant="soft"
+            color={barva[stav]}
+            style={{ justifyContent: "space-between" }}
+          >
+            {stavLabel[stav]}
+            <ChevronDownIcon />
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content
+          style={{ width: "var(--radix-dropdown-menu-trigger-width" }}
+        >
+          {MOZNOSTI.map((s) => (
+            <DropdownMenu.Item
+              key={s}
+              color={barva[s]}
+              onSelect={() => setStav(s)}
+            >
+              {stavLabel[s]}
+            </DropdownMenu.Item>
+          ))}
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
 
       <TextField.Root
         size="3"
