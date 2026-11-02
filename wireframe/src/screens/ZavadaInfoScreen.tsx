@@ -102,14 +102,18 @@ function ZavadaInfoScreen() {
       <TextField.Root
         size="3"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setName(e.target.value)
+        }
         placeholder="Název závady"
       />
 
       <TextArea
         size="3"
         value={primaryDescription}
-        onChange={(e) => setPrimaryDescription(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setPrimaryDescription(e.target.value)
+        }
         placeholder="Prvotní popis (viditelný v přehledu závad)"
         rows={3}
       />
@@ -117,7 +121,9 @@ function ZavadaInfoScreen() {
       <TextArea
         size="3"
         value={secondaryDescription}
-        onChange={(e) => setSecondaryDescription(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setSecondaryDescription(e.target.value)
+        }
         placeholder="Sekundární popis (viditelný v detailu závady)"
         rows={3}
       />

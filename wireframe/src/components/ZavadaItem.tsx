@@ -59,7 +59,7 @@ function ZavadaItem({
           </Text>
 
           <Box
-            onClick={(e) => {
+            onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
               e.stopPropagation();
               onStavChange?.(zavada.id, nextStav(zavada.stav));
             }}

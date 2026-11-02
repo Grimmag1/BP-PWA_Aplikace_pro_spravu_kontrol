@@ -9,7 +9,7 @@ function AddZavadaButton({
   const galerieRef = useRef<HTMLInputElement>(null);
   const fotakRef = useRef<HTMLInputElement>(null);
 
-  const handleVyber = (e) => {
+  const handleVyber = (e: React.ChangeEvent<HTMLInputElement>) => {
     const soubory = Array.from(e.target.files ?? []);
     e.target.value = "";
     if (soubory.length === 0) return;

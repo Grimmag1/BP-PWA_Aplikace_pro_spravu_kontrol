@@ -72,9 +72,15 @@ function StavbaItem({
         <Flex align="center" gap="2">
           <Popover.Root
             open={jeOtevrenPopover}
-            onOpenChange={(open) => setOpenPopoverId(open ? stavba.id : null)}
+            onOpenChange={(open: boolean) =>
+              setOpenPopoverId(open ? stavba.id : null)
+            }
           >
-            <Popover.Trigger onClick={(e) => e.stopPropagation()}>
+            <Popover.Trigger
+              onClick={(e: React.ChangeEvent<HTMLInputElement>) =>
+                e.stopPropagation()
+              }
+            >
               <Flex align="center" gap="1" style={{ curson: "pointer" }}>
                 {DNY.map((den, i) => (
                   <Flex
@@ -101,7 +107,11 @@ function StavbaItem({
               </Flex>
             </Popover.Trigger>
 
-            <Popover.Content onClick={(e) => e.stopPropagation()}>
+            <Popover.Content
+              onClick={(e: React.ChangeEvent<HTMLInputElement>) =>
+                e.stopPropagation()
+              }
+            >
               <Flex gap="2">
                 {DNY.map((den, i) => (
                   <Flex
@@ -139,7 +149,7 @@ function StavbaItem({
           <IconButton
             variant="soft"
             size="2"
-            onClick={(e) => {
+            onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
               e.stopPropagation();
               navigate(`/stavba/${stavba.id}/info`);
             }}

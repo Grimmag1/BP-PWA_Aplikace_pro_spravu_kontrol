@@ -107,7 +107,9 @@ function SeznamStavebScreen() {
         <TextField.Root
           placeholder="Hledat..."
           value={hledani}
-          onChange={(e) => setHledani(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setHledani(e.target.value)
+          }
           mb={filterRozbaleno ? "3" : "0"}
         >
           <TextField.Slot>
@@ -119,7 +121,9 @@ function SeznamStavebScreen() {
           <>
             <SegmentedControl.Root
               value={filterStatus}
-              onValueChange={(v) => setFilterStatus(v as typeof filterStatus)}
+              onValueChange={(v: string) =>
+                setFilterStatus(v as typeof filterStatus)
+              }
               mb="3"
               style={{ width: "100%" }}
             >
@@ -158,7 +162,7 @@ function SeznamStavebScreen() {
 
             <SegmentedControl.Root
               value={order}
-              onValueChange={(v) => setOrder(v as typeof order)}
+              onValueChange={(v: string) => setOrder(v as typeof order)}
               mb="4"
               style={{ width: "100%" }}
             >

@@ -12,7 +12,7 @@ function FotoGalerie({
   const inputRef = useRef<HTMLInputElement>(null);
   const [nahledIndex, setNahledIndex] = useState<number | null>(null);
 
-  const handleVyber = (e) => {
+  const handleVyber = (e: React.ChangeEvent<HTMLInputElement>) => {
     const soubory = Array.from(e.target.files ?? []);
     const noveUrl = soubory.map((s) => URL.createObjectURL(s));
     onChange([...fotky, ...noveUrl]);
@@ -119,7 +119,7 @@ function FotoGalerie({
               overflowX: "auto",
               scrollSnapType: "x mandatory",
             }}
-            ref={(r) => {
+            ref={(r: HTMLDivElement | null) => {
               if (r) {
                 r.scrollLeft = nahledIndex * r.clientWidth;
               }
