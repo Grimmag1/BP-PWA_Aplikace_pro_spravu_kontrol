@@ -3,6 +3,7 @@ export type Zavada = {
   poradoveCislo: number;
   zdrojKontrola: number | null;
   typ: "predchozi" | "povinna" | "nova";
+  povinnaIndex?: number | null;
   name: string;
   primaryDescription: string;
   secondaryDescription: string;

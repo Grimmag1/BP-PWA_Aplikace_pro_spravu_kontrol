@@ -1,5 +1,5 @@
 import type { Zavada } from "../types.tsx";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Box, Card, Flex, Separator, Text, Badge } from "@radix-ui/themes";
 
 function ZavadaItem({
@@ -10,7 +10,7 @@ function ZavadaItem({
   onStavChange?: (id: number, stav: Zavada["stav"]) => void;
 }) {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { stavbaId } = useParams();
 
   const nextStav = (current: Zavada["stav"]): Zavada["stav"] => {
     if (current === "nesoulad") return "soulad";
@@ -46,7 +46,9 @@ function ZavadaItem({
       }}
     >
       <Card
-        onClick={() => navigate(`${location.pathname}/zavada/${zavada.id}`)}
+        onClick={() =>
+          navigate(`/stavba/${stavbaId}/zapis/zavada/${zavada.id}`)
+        }
         style={{
           cursor: "pointer",
         }}

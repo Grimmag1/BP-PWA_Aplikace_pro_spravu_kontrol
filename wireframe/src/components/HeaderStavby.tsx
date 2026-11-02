@@ -19,7 +19,7 @@ function HeaderStavby({
   return (
     <Flex direction="column" gap="2">
       <Flex align="center" justify="between" gap="2">
-        <IconButton onClick={() => navigate("/")}>
+        <IconButton onClick={() => navigate(-1)}>
           <ArrowLeftIcon />
         </IconButton>
 

@@ -5,10 +5,13 @@ import { mockStavby } from "../mockdata.ts";
 import { useParams, useNavigate, useOutlet } from "react-router-dom";
 import { useState } from "react";
 import type { Zavada } from "../types.tsx";
-import { Flex, Box } from "@radix-ui/themes";
+import { Flex, Box, Button } from "@radix-ui/themes";
 
 export type ZapisContext = {
   zavady: Zavada[];
+  predchoziZavady: Zavada[];
+  aktualniZavady: Zavada[];
+  zmenitStav: (id: number, stav: Zavada["stav"]) => void;
   dalsiZavada: (foto?: string[]) => Zavada;
   ulozitZavadu: (zavada: Zavada) => void;
 };
@@ -110,8 +113,65 @@ function ZapisScreen() {
     navigate(`/stavba/${stavbaId}/zapis/zavada/nova`, { state: { foto } });
   };
 
+  const zmenitStav = (id: number, stav: Zavada["stav"]) => {
+    for (const set of [
+      setPredchoziZavady,
+      setPovinneZavady,
+      setAktualniZavady,
+    ]) {
+      set((prev) => prev.map((z) => (z.id === id ? { ...z, stav } : z)));
+    }
+  };
+
+  const pripravitSouhrn = () => {
+    const nesouladPovinne = povinneZavady.filter((z) => z.stav === "nesoulad");
+    setAktualniZavady((prev) => {
+      const zbyle = prev.filter(
+        (z) =>
+          z.povinnaIndex == null ||
+          nesouladPovinne.some((p) => p.poradoveCislo === z.povinnaIndex),
+      );
+      const uzPrevedene = new Set(zbyle.map((z) => z.povinnaIndex));
+
+      let dalsiId =
+        Math.max(
+          0,
+          ...[...predchoziZavady, ...povinneZavady, ...zbyle].map((z) => z.id),
+        ) + 1;
+      let dalsiCislo =
+        Math.max(
+          0,
+          ...stavba.zapisy
+            .flatMap((zp) => zp.zavady)
+            .filter((z) => z.typ !== "povinna")
+            .map((z) => z.poradoveCislo),
+          ...zbyle.map((z) => z.poradoveCislo),
+        ) + 1;
+
+      const nove: Zavada[] = nesouladPovinne
+        .filter((p) => !uzPrevedene.has(p.poradoveCislo))
+        .map((p) => ({
+          id: dalsiId++,
+          poradoveCislo: dalsiCislo++,
+          zdrojKontrola: noveCisloZapisu,
+          typ: "nova" as const,
+          povinnaIndex: p.poradoveCislo,
+          name: p.name,
+          primaryDescription: p.primaryDescription,
+          secondaryDescription: p.secondaryDescription,
+          foto: p.foto,
+          stav: "nesoulad" as const,
+        }));
+      return [...zbyle, ...nove];
+    });
+    navigate(`/stavba/${stavbaId}/zapis/souhrn`);
+  };
+
   const outlet = useOutlet({
     zavady: [...predchoziZavady, ...povinneZavady, ...aktualniZavady],
+    predchoziZavady,
+    aktualniZavady,
+    zmenitStav,
     dalsiZavada,
     ulozitZavadu,
   } satisfies ZapisContext);
@@ -157,6 +217,9 @@ function ZapisScreen() {
         showAddButton
         barvaSekce="var(--blue-9)"
       />
+      <Button size="4" onClick={pripravitSouhrn}>
+        Pokračovat
+      </Button>
     </Flex>
   );
 }
