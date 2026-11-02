@@ -35,7 +35,7 @@ function AddZavadaButton({
         style={{ display: "none" }}
       />
 
-      <DropdownMenu.Root>
+      <DropdownMenu.Root modal={false}>
         <DropdownMenu.Trigger>
           <Button size="4" variant="soft" style={{ width: "100%" }}>
             +

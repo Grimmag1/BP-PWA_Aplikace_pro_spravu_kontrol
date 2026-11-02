@@ -8,8 +8,7 @@ import { mockStavby } from "../mockdata.ts";
 function ZapisSouhrnScreen() {
   const navigate = useNavigate();
   const { stavbaId } = useParams();
-  const { predchoziZavady, aktualniZavady, zmenitStav } =
-    useOutletContext<ZapisContext>();
+  const { predchoziZavady, aktualniZavady } = useOutletContext<ZapisContext>();
 
   const stavba = mockStavby.find((s) => s.id === Number(stavbaId))!;
   const noveCisloZapisu = stavba.zapisy.length + 1;
@@ -33,14 +32,12 @@ function ZapisSouhrnScreen() {
 
       <SekceZavad
         nazev="Nevyřešené závady z předchozích kontrol"
-        zavady={predchoziZavady.filter((z) => z.stav === "nesoulad")}
-        onStavChange={zmenitStav}
+        zavady={predchoziZavady.filter((z) => z.stav !== "soulad")}
         barvaSekce="var(--red-9)"
       />
       <SekceZavad
         nazev="Nové závady"
         zavady={aktualniZavady}
-        onStavChange={zmenitStav}
         barvaSekce="var(--blue-9)"
       />
 

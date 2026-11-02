@@ -1,6 +1,16 @@
 import type { Zavada } from "../types.tsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Card, Flex, Separator, Text, Badge } from "@radix-ui/themes";
+import {
+  Box,
+  Card,
+  Flex,
+  Separator,
+  Text,
+  Badge,
+  DropdownMenu,
+  Button,
+} from "@radix-ui/themes";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 
 function ZavadaItem({
   zavada,
@@ -12,25 +22,19 @@ function ZavadaItem({
   const navigate = useNavigate();
   const { stavbaId } = useParams();
 
-  const nextStav = (current: Zavada["stav"]): Zavada["stav"] => {
-    if (current === "nesoulad") return "soulad";
-    if (current === "soulad") return "v_procesu";
-    if (current === "v_procesu") return "nesoulad";
-    return "nesoulad";
-  };
-
   const barva: Record<string, string> = {
-    nesoulad: "var(--red-9)",
-    v_procesu: "var(--orange-9)",
-    soulad: "var(--green-9)",
+    nesoulad: "red",
+    v_procesu: "orange",
+    soulad: "green",
   };
 
-  const stavLeft: Record<string, string> = {
-    nesoulad: "4px",
-    v_procesu: "calc(50% - 12px)",
-    soulad: "calc(100% - 28px)",
-    null: "4px",
+  const stavLabel: Record<string, string> = {
+    nesoulad: "Nesoulad",
+    v_procesu: "V řešení",
+    soulad: "Soulad",
   };
+
+  const MOZNOSTI: Zavada["stav"][] = ["nesoulad", "v_procesu", "soulad"];
 
   const cislo =
     zavada.typ === "povinna"
@@ -57,37 +61,52 @@ function ZavadaItem({
           <Text weight="bold">
             {cislo} {zavada.name}
           </Text>
+          {onStavChange ? (
+            <DropdownMenu.Root modal={false}>
+              <DropdownMenu.Trigger>
+                <Button
+                  size="2"
+                  variant="soft"
+                  color={barva[zavada.stav]}
+                  onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                  style={{ flexShrink: 0 }}
+                >
+                  {stavLabel[zavada.stav]}
+                  <ChevronDownIcon />
+                </Button>
+              </DropdownMenu.Trigger>
 
-          <Box
-            onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
-              e.stopPropagation();
-              onStavChange?.(zavada.id, nextStav(zavada.stav));
-            }}
-            style={{
-              position: "relative",
-              flexShrink: 0,
-              width: "80px",
-              height: "32px",
-              backgroundColor: "var(--gray-4)",
-              borderRadius: "9999px",
-              cursor: "pointer",
-              userSelect: "none",
-            }}
-          >
-            <Box
-              style={{
-                position: "absolute",
-                top: "4px",
-                left: stavLeft[zavada.stav],
-                width: "24px",
-                height: "24px",
-                borderRadius: "50%",
-                backgroundColor:
-                  zavada.stav !== "null" ? barva[zavada.stav] : "var(--gray-8)",
-                transition: "left 0.25s ease, background-color 0.25s ease",
-              }}
-            />
-          </Box>
+              <DropdownMenu.Content
+                onClick={(e: React.MouseEvent) => e.stopPropagation()}
+              >
+                {MOZNOSTI.map((s) => (
+                  <DropdownMenu.Item
+                    key={s}
+                    color={barva[s]}
+                    onSelect={() => onStavChange(zavada.id, s)}
+                  >
+                    {stavLabel[s]}
+                  </DropdownMenu.Item>
+                ))}
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          ) : (
+            zavada.stav !== "null" && (
+              <Badge
+                size="2"
+                variant="soft"
+                color={
+                  zavada.stav === "nesoulad"
+                    ? "red"
+                    : zavada.stav === "soulad"
+                      ? "green"
+                      : "orange"
+                }
+              >
+                {stavLabel[zavada.stav]}
+              </Badge>
+            )
+          )}
         </Flex>
 
         <Separator size="4" my="2" />

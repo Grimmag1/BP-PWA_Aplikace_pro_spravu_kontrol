@@ -5,6 +5,7 @@ import ZavadaInfoScreen from "./screens/ZavadaInfoScreen.tsx";
 import ZapisSouhrnScreen from "./screens/ZapisSouhrnScreen.tsx";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+import ZapisDodatkyScreen from "./screens/ZapisDodatkyScreen.tsx";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <Route path="/stavba/:stavbaId/zapis/" element={<ZapisScreen />}>
         <Route path="zavada/:zavadaId" element={<ZavadaInfoScreen />} />
         <Route path="souhrn" element={<ZapisSouhrnScreen />} />
-        <Route path="dodotaky" element={<div>TODO</div>} />
+        <Route path="dodatky" element={<ZapisDodatkyScreen />} />
       </Route>
       <Route path="/stavba/:stavbaId/info" element={<StavbaInfoScreen />} />
     </Routes>

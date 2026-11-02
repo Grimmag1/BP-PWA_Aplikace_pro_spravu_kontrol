@@ -9,6 +9,8 @@ import type { ZapisContext } from "./ZapisScreen";
 import {
   Box,
   Button,
+  ChevronDownIcon,
+  DropdownMenu,
   Flex,
   Heading,
   IconButton,
@@ -17,6 +19,7 @@ import {
   TextField,
 } from "@radix-ui/themes";
 import FotoGalerie from "../components/FotoGalerie";
+import type { Zavada } from "../types.tsx";
 
 function ZavadaInfoScreen() {
   const location = useLocation();
@@ -38,13 +41,14 @@ function ZavadaInfoScreen() {
   const [secondaryDescription, setSecondaryDescription] = useState(
     zavada.secondaryDescription,
   );
-
+  const [stav, setStav] = useState<Zavada["stav"]>(zavada.stav);
   const [foto, setFoto] = useState<string[]>(zavada.foto);
 
   const zmenaProvedena =
     name !== zavada.name ||
     primaryDescription !== zavada.primaryDescription ||
-    secondaryDescription !== zavada.secondaryDescription;
+    secondaryDescription !== zavada.secondaryDescription ||
+    stav !== zavada.stav;
 
   const handleUlozit = () => {
     ulozitZavadu({
@@ -53,6 +57,7 @@ function ZavadaInfoScreen() {
       primaryDescription,
       secondaryDescription,
       foto,
+      stav,
     });
     navigate(-1);
   };
@@ -61,6 +66,7 @@ function ZavadaInfoScreen() {
     setName(zavada.name);
     setPrimaryDescription(zavada.primaryDescription);
     setSecondaryDescription(zavada.secondaryDescription);
+    setStav(zavada.stav);
     navigate(-1);
   };
 
@@ -75,6 +81,20 @@ function ZavadaInfoScreen() {
       navigate(-1);
     }
   };
+
+  const barva: Record<string, string> = {
+    nesoulad: "red",
+    v_procesu: "orange",
+    soulad: "green",
+  };
+
+  const stavLabel: Record<string, string> = {
+    nesoulad: "Nesoulad",
+    v_procesu: "V řešení",
+    soulad: "Soulad",
+  };
+
+  const MOZNOSTI: Zavada["stav"][] = ["nesoulad", "v_procesu", "soulad"];
 
   return (
     <Flex direction="column" gap="3" p="4" style={{ minHeight: "100svh" }}>
@@ -92,11 +112,35 @@ function ZavadaInfoScreen() {
                 : "z aktuálního zápisu"}
             </Text>
           )}
+          <DropdownMenu.Root modal={false}>
+            <DropdownMenu.Trigger>
+              <Button
+                size="3"
+                variant="soft"
+                color={barva[stav]}
+                style={{ justifyContent: "space-between" }}
+              >
+                {stavLabel[stav]}
+                <ChevronDownIcon />
+              </Button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content
+              style={{ width: "var(--radix-dropdown-menu-trigger-width" }}
+            >
+              {MOZNOSTI.map((s) => (
+                <DropdownMenu.Item
+                  key={s}
+                  color={barva[s]}
+                  onSelect={() => setStav(s)}
+                >
+                  {stavLabel[s]}
+                </DropdownMenu.Item>
+              ))}
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
         </Flex>
 
-        <IconButton variant="ghost" color="gray" onClick={handleZavrit}>
-          X
-        </IconButton>
+        <IconButton onClick={handleZavrit}>X</IconButton>
       </Flex>
 
       <TextField.Root

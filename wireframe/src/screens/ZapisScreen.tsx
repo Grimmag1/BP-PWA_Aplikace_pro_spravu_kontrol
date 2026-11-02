@@ -102,6 +102,7 @@ function ZapisScreen() {
               primaryDescription: zavada.primaryDescription,
               secondaryDescription: zavada.secondaryDescription,
               foto: zavada.foto,
+              stav: zavada.stav,
             }
           : z,
       );
@@ -210,9 +211,6 @@ function ZapisScreen() {
       <SekceZavad
         nazev="Závady z aktuální kontroly"
         zavady={aktualniZavady}
-        onStavChange={(id, stav) =>
-          handleStavChange(setAktualniZavady, id, stav)
-        }
         onPridatZavadu={handlePridatZavadu}
         showAddButton
         barvaSekce="var(--blue-9)"
