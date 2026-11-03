@@ -16,6 +16,7 @@ export type ZapisContext = {
   ulozitZavadu: (zavada: Zavada) => void;
   zvyraznitNeuplne: boolean;
   setZvyraznitNeuplne: (v: boolean) => void;
+  smazatZavadu: (id: number) => void;
 };
 
 function ZapisScreen() {
@@ -113,6 +114,10 @@ function ZapisScreen() {
     setPovinneZavady(upravit);
   };
 
+  const smazatZavadu = (id: number) => {
+    setAktualniZavady((prev) => prev.filter((z) => z.id !== id));
+  };
+
   const handlePridatZavadu = (foto: string[]) => {
     navigate(`/stavba/${stavbaId}/zapis/zavada/nova`, { state: { foto } });
   };
@@ -182,6 +187,7 @@ function ZapisScreen() {
     ulozitZavadu,
     zvyraznitNeuplne,
     setZvyraznitNeuplne,
+    smazatZavadu,
   } satisfies ZapisContext);
 
   if (outlet) return outlet;

@@ -7,9 +7,9 @@ import {
 import { useState } from "react";
 import type { ZapisContext } from "./ZapisScreen";
 import {
+  Dialog,
   Box,
   Button,
-  ChevronDownIcon,
   DropdownMenu,
   Flex,
   Heading,
@@ -20,13 +20,16 @@ import {
 } from "@radix-ui/themes";
 import FotoGalerie from "../components/FotoGalerie";
 import type { Zavada } from "../types.tsx";
+import { TrashIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
 function ZavadaInfoScreen() {
   const location = useLocation();
   const { zavadaId } = useParams();
-  const { zavady, dalsiZavada, ulozitZavadu } =
+  const { zavady, dalsiZavada, ulozitZavadu, smazatZavadu } =
     useOutletContext<ZapisContext>();
   const navigate = useNavigate();
+
+  const [stornoDialog, setStornoDialog] = useState(false);
 
   const [novaZavada] = useState(() =>
     zavadaId === "nova" ? dalsiZavada(location.state?.foto) : null,
@@ -48,7 +51,8 @@ function ZavadaInfoScreen() {
     name !== zavada.name ||
     primaryDescription !== zavada.primaryDescription ||
     secondaryDescription !== zavada.secondaryDescription ||
-    stav !== zavada.stav;
+    stav !== zavada.stav ||
+    JSON.stringify(foto) !== JSON.stringify(zavada.foto);
 
   const handleUlozit = () => {
     ulozitZavadu({
@@ -62,24 +66,20 @@ function ZavadaInfoScreen() {
     navigate(-1);
   };
 
-  const handleStorno = () => {
-    setName(zavada.name);
-    setPrimaryDescription(zavada.primaryDescription);
-    setSecondaryDescription(zavada.secondaryDescription);
-    setStav(zavada.stav);
-    navigate(-1);
-  };
+  const potrebaDialog =
+    zmenaProvedena || (zavadaId === "nova" && foto.length > 0);
 
-  const handleZavrit = () => {
-    if (zmenaProvedena) {
-      if (window.confirm("Máte neuložené změny. Chcete je uložit?")) {
-        handleUlozit();
-      } else {
-        navigate(-1);
-      }
+  const handleStorno = () => {
+    if (potrebaDialog) {
+      setStornoDialog(true);
     } else {
       navigate(-1);
     }
+  };
+
+  const handleSmazat = () => {
+    smazatZavadu(zavada.id);
+    navigate(-1);
   };
 
   const barva: Record<string, string> = {
@@ -114,7 +114,36 @@ function ZavadaInfoScreen() {
           )}
         </Flex>
 
-        <IconButton onClick={handleZavrit}>X</IconButton>
+        {zavada.typ === "nova" && (
+          <Dialog.Root>
+            <Dialog.Trigger>
+              <IconButton
+                variant="ghost"
+                color="red"
+                aria-label="Smazat závadu"
+              >
+                <TrashIcon width="30" height="30" />
+              </IconButton>
+            </Dialog.Trigger>
+            <Dialog.Content maxWidth="400px">
+              <Dialog.Title>Smazat závadu</Dialog.Title>
+              <Dialog.Description>
+                Opravdu chcete smazat závadu č.{zavada.poradoveCislo}? Tuto akci
+                nelze vrátit zpět.
+              </Dialog.Description>
+              <Flex gap="3" mt="4" justify="end">
+                <Dialog.Close>
+                  <Button variant="soft" color="gray">
+                    Ne
+                  </Button>
+                </Dialog.Close>
+                <Button color="red" onClick={handleSmazat}>
+                  Smazat
+                </Button>
+              </Flex>
+            </Dialog.Content>
+          </Dialog.Root>
+        )}
       </Flex>
 
       <DropdownMenu.Root modal={false}>
@@ -130,7 +159,7 @@ function ZavadaInfoScreen() {
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
-          style={{ width: "var(--radix-dropdown-menu-trigger-width" }}
+          style={{ width: "var(--radix-dropdown-menu-trigger-width)" }}
         >
           {MOZNOSTI.map((s) => (
             <DropdownMenu.Item
@@ -156,7 +185,7 @@ function ZavadaInfoScreen() {
       <TextArea
         size="3"
         value={primaryDescription}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
           setPrimaryDescription(e.target.value)
         }
         placeholder="Prvotní popis (viditelný v přehledu závad)"
@@ -166,7 +195,7 @@ function ZavadaInfoScreen() {
       <TextArea
         size="3"
         value={secondaryDescription}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
           setSecondaryDescription(e.target.value)
         }
         placeholder="Sekundární popis (viditelný v detailu závady)"
@@ -198,6 +227,28 @@ function ZavadaInfoScreen() {
           </Button>
         </Box>
       </Flex>
+
+      <Dialog.Root open={stornoDialog} onOpenChange={setStornoDialog}>
+        <Dialog.Content maxWidth="400px">
+          <Dialog.Title>Neuložené změny</Dialog.Title>
+          <Dialog.Description>
+            Provedli jste změny. Chcete je uložit?
+          </Dialog.Description>
+          <Flex gap="3" mt="4" justify="end" wrap="wrap">
+            <Dialog.Close>
+              <Button varian="soft" color="gray">
+                Zpět
+              </Button>
+            </Dialog.Close>
+            <Button variant="soft" color="red" onClick={() => navigate(-1)}>
+              Zahodit
+            </Button>
+            <Button color="green" onClick={handleUlozit}>
+              Uložit
+            </Button>
+          </Flex>
+        </Dialog.Content>
+      </Dialog.Root>
     </Flex>
   );
 }

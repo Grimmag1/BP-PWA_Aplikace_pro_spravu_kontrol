@@ -1,6 +1,6 @@
 import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 import type { ZapisContext } from "./ZapisScreen";
-import { Flex, Heading, Button, Box, AlertDialog } from "@radix-ui/themes";
+import { Flex, Heading, Button, Box, Dialog } from "@radix-ui/themes";
 import SekceZavad from "../components/SekceZavad";
 import HeaderStavby from "../components/HeaderStavby";
 import { mockStavby } from "../mockdata.ts";
@@ -77,36 +77,35 @@ function ZapisSouhrnScreen() {
         Pokračovat
       </Button>
 
-      <AlertDialog.Root
+      <Dialog.Root
         open={pokracovatDialogOtevren}
-        onOpenChange={setPokracovatDialogOtevren}
+        onOpenChange={(open: boolean) => {
+          setPokracovatDialogOtevren(open);
+          if (!open) {
+            setZvyraznitNeuplne(true);
+          }
+        }}
       >
-        <AlertDialog.Content maxWidth="400px">
-          <AlertDialog.Title>Neúplné závady</AlertDialog.Title>
-          <AlertDialog.Description>
+        <Dialog.Content maxWidth="400px">
+          <Dialog.Title>Neúplné závady</Dialog.Title>
+          <Dialog.Description>
             {neuplne.length === 1
               ? "Jedna závada nemá"
               : neuplne.length < 5
                 ? `${neuplne.length} závady nemají`
                 : `${neuplne.length} závad nemá`}{" "}
             vyplněný název, popis nebo fotku. Přejete si i přesto pokračovat?
-          </AlertDialog.Description>
+          </Dialog.Description>
           <Flex gap="3" mt="4" justify="end">
-            <AlertDialog.Cancel>
-              <Button
-                variant="soft"
-                color="gray"
-                onClick={() => setZvyraznitNeuplne(true)}
-              >
+            <Dialog.Close>
+              <Button variant="soft" color="gray">
                 Ne
               </Button>
-            </AlertDialog.Cancel>
-            <AlertDialog.Action>
-              <Button onClick={pokracovat}>Ano</Button>
-            </AlertDialog.Action>
+            </Dialog.Close>
+            <Button onClick={pokracovat}>Ano</Button>
           </Flex>
-        </AlertDialog.Content>
-      </AlertDialog.Root>
+        </Dialog.Content>
+      </Dialog.Root>
     </Flex>
   );
 }
