@@ -11,6 +11,7 @@ function SekceZavad({
   onStavChange,
   onPridatZavadu,
   barvaSekce,
+  zvyraznene,
 }: {
   nazev: string;
   zavady: Zavada[];
@@ -18,6 +19,7 @@ function SekceZavad({
   onStavChange?: (id: number, stav: Zavada["stav"]) => void;
   onPridatZavadu?: (foto: string[]) => void;
   barvaSekce?: string;
+  zvyraznene?: number[];
 }) {
   const [rozbaleno, setRozbaleno] = useState(true);
 
@@ -62,6 +64,7 @@ function SekceZavad({
                 key={zavada.id}
                 zavada={zavada}
                 onStavChange={onStavChange}
+                zvyraznit={zvyraznene?.includes(zavada.id)}
               />
             ))}
           </Flex>

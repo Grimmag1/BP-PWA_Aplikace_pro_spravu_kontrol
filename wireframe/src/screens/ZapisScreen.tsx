@@ -14,6 +14,8 @@ export type ZapisContext = {
   zmenitStav: (id: number, stav: Zavada["stav"]) => void;
   dalsiZavada: (foto?: string[]) => Zavada;
   ulozitZavadu: (zavada: Zavada) => void;
+  zvyraznitNeuplne: boolean;
+  setZvyraznitNeuplne: (v: boolean) => void;
 };
 
 function ZapisScreen() {
@@ -22,6 +24,7 @@ function ZapisScreen() {
   const stavba = mockStavby.find((s) => s.id === Number(stavbaId))!;
   const posledniZapis = stavba.zapisy[stavba.zapisy.length - 1];
   const noveCisloZapisu = stavba.zapisy.length + 1;
+  const [zvyraznitNeuplne, setZvyraznitNeuplne] = useState(false);
 
   const initialPredchoziZavady: Zavada[] = posledniZapis.zavady
     .filter(
@@ -177,6 +180,8 @@ function ZapisScreen() {
     zmenitStav,
     dalsiZavada,
     ulozitZavadu,
+    zvyraznitNeuplne,
+    setZvyraznitNeuplne,
   } satisfies ZapisContext);
 
   if (outlet) return outlet;

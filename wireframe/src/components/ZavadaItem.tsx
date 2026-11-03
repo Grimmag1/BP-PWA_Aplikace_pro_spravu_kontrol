@@ -15,9 +15,11 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 function ZavadaItem({
   zavada,
   onStavChange,
+  zvyraznit,
 }: {
   zavada: Zavada;
   onStavChange?: (id: number, stav: Zavada["stav"]) => void;
+  zvyraznit?: boolean;
 }) {
   const navigate = useNavigate();
   const { stavbaId } = useParams();
@@ -44,7 +46,7 @@ function ZavadaItem({
   return (
     <div
       style={{
-        borderLeft: undefined, //TODO vyznaceni chybici fotky
+        borderLeft: `5px solid ${zvyraznit ? "var(--red-9)" : "transparent"}`,
         borderRadius: "var(--radius-3)",
         overflow: "hidden",
       }}
