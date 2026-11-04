@@ -60,6 +60,10 @@ const zapis = (cislo: number, datum: string, zavady: Bez[]): Zapis => ({
   poradoveCislo: cislo,
   datum,
   zavady: zavady.map((z, i) => ({ ...z, id: i + 1 })),
+  predlozeniRizik: false,
+  predlozeniTP: false,
+  cinnosti: [],
+  poznamky: "",
 });
 
 // ───────── Stavba A ─────────
@@ -337,6 +341,18 @@ export const mockStavby: Stavba[] = [
         aLeseni,
       ]),
     ],
+    zhotovitele: [
+      {
+        id: 1,
+        nazev: "Firma XY s.r.o.",
+        ic: "12345678",
+        kontaktOsoba: "Jan Novák",
+        kontaktTelefon: "+420 731 123 456",
+        kontaktMail: "",
+        predlozeniRizik: true,
+        predlozeniTP: false,
+      },
+    ],
   },
   {
     id: 2,
@@ -373,6 +389,18 @@ export const mockStavby: Stavba[] = [
         bZony,
       ]),
     ],
+    zhotovitele: [
+      {
+        id: 1,
+        nazev: "Firma XY s.r.o.",
+        ic: "12345678",
+        kontaktOsoba: "Jan Novák",
+        kontaktTelefon: "+420 731 123 456",
+        kontaktMail: "",
+        predlozeniRizik: true,
+        predlozeniTP: false,
+      },
+    ],
   },
   {
     id: 3,
@@ -405,6 +433,18 @@ export const mockStavby: Stavba[] = [
         ...povinne(VSE_OK),
       ]),
     ],
+    zhotovitele: [
+      {
+        id: 1,
+        nazev: "Firma XY s.r.o.",
+        ic: "12345678",
+        kontaktOsoba: "Jan Novák",
+        kontaktTelefon: "+420 731 123 456",
+        kontaktMail: "",
+        predlozeniRizik: true,
+        predlozeniTP: false,
+      },
+    ],
   },
   {
     id: 4,
@@ -431,6 +471,18 @@ export const mockStavby: Stavba[] = [
         ...povinne(VSE_OK),
         dOsvetleni,
       ]),
+    ],
+    zhotovitele: [
+      {
+        id: 1,
+        nazev: "Firma XY s.r.o.",
+        ic: "12345678",
+        kontaktOsoba: "Jan Novák",
+        kontaktTelefon: "+420 731 123 456",
+        kontaktMail: "",
+        predlozeniRizik: true,
+        predlozeniTP: false,
+      },
     ],
   },
   {
@@ -465,6 +517,18 @@ export const mockStavby: Stavba[] = [
         eChemie,
       ]),
     ],
+    zhotovitele: [
+      {
+        id: 1,
+        nazev: "Firma XY s.r.o.",
+        ic: "12345678",
+        kontaktOsoba: "Jan Novák",
+        kontaktTelefon: "+420 731 123 456",
+        kontaktMail: "",
+        predlozeniRizik: true,
+        predlozeniTP: false,
+      },
+    ],
   },
   {
     id: 6,
@@ -497,6 +561,18 @@ export const mockStavby: Stavba[] = [
         ...povinne(VSE_OK),
         fZabradli,
       ]),
+    ],
+    zhotovitele: [
+      {
+        id: 1,
+        nazev: "Firma XY s.r.o.",
+        ic: "12345678",
+        kontaktOsoba: "Jan Novák",
+        kontaktTelefon: "+420 731 123 456",
+        kontaktMail: "",
+        predlozeniRizik: true,
+        predlozeniTP: false,
+      },
     ],
   },
 ];

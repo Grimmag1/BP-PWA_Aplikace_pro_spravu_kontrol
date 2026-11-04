@@ -4,7 +4,7 @@ import SekceZavad from "../components/SekceZavad.tsx";
 import { mockStavby } from "../mockdata.ts";
 import { useParams, useNavigate, useOutlet } from "react-router-dom";
 import { useState } from "react";
-import type { Zavada } from "../types.tsx";
+import type { Dodatky, Zavada } from "../types.tsx";
 import { Flex, Box, Button } from "@radix-ui/themes";
 
 export type ZapisContext = {
@@ -17,6 +17,8 @@ export type ZapisContext = {
   zvyraznitNeuplne: boolean;
   setZvyraznitNeuplne: (v: boolean) => void;
   smazatZavadu: (id: number) => void;
+  dodatky: Dodatky;
+  setDodatky: React.Dispatch<React.SetStateAction<Dodatky>>;
 };
 
 function ZapisScreen() {
@@ -178,6 +180,14 @@ function ZapisScreen() {
     navigate(`/stavba/${stavbaId}/zapis/souhrn`);
   };
 
+  const [dodatky, setDodatky] = useState<Dodatky>({
+    predlozeniRizik: false,
+    predlozeniTP: false,
+    cinnosti: [],
+    poznamky: "",
+    zhotovitele: stavba.zhotovitele ?? [],
+  });
+
   const outlet = useOutlet({
     zavady: [...predchoziZavady, ...povinneZavady, ...aktualniZavady],
     predchoziZavady,
@@ -188,6 +198,8 @@ function ZapisScreen() {
     zvyraznitNeuplne,
     setZvyraznitNeuplne,
     smazatZavadu,
+    dodatky,
+    setDodatky,
   } satisfies ZapisContext);
 
   if (outlet) return outlet;

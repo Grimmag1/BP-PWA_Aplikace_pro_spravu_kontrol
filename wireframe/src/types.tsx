@@ -16,6 +16,10 @@ export type Zapis = {
   poradoveCislo: number;
   datum: string;
   zavady: Zavada[];
+  predlozeniRizik: boolean;
+  predlozeniTP: boolean;
+  cinnosti: string[];
+  poznamky: string;
 };
 
 export type Stavba = {
@@ -28,4 +32,24 @@ export type Stavba = {
   kontaktTelefon: string;
   dnyKontroly: number[];
   zapisy: Zapis[];
+  zhotovitele: Zhotovitel[];
+};
+
+export type Zhotovitel = {
+  id: number;
+  nazev: string;
+  ic: string;
+  kontaktOsoba?: string;
+  kontaktTelefon?: string;
+  kontaktMail?: string;
+  predlozeniRizik: boolean;
+  predlozeniTP: boolean;
+};
+
+export type Dodatky = {
+  predlozeniRizik: boolean;
+  predlozeniTP: boolean;
+  cinnosti: string[];
+  poznamky: string;
+  zhotovitele: Zhotovitel[];
 };
