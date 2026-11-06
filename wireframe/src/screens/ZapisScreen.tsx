@@ -43,7 +43,7 @@ function ZapisScreen() {
 
   const initialPovinneZavady: Zavada[] = posledniZapis.zavady
     .filter((z) => z.typ === "povinna")
-    .map((z) => ({ ...z, stav: "nesoulad" as const }));
+    .map((z) => ({ ...z, stav: "soulad" as const }));
 
   const [predchoziZavady, setPredchoziZavady] = useState<Zavada[]>(
     initialPredchoziZavady,
@@ -226,7 +226,7 @@ function ZapisScreen() {
         barvaSekce="var(--red-9)"
       />
       <SekceZavad
-        nazev="Povinné závady"
+        nazev="Fyzická kontrola stavby"
         zavady={povinneZavady}
         onStavChange={(id, stav) =>
           handleStavChange(setPovinneZavady, id, stav)

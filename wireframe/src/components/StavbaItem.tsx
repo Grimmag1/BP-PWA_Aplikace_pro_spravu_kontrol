@@ -5,8 +5,10 @@ import { useState } from "react";
 import {
   HomeIcon,
   PersonIcon,
-  MobileIcon,
   InfoCircledIcon,
+  BackpackIcon,
+  ChatBubbleIcon,
+  CopyIcon,
 } from "@radix-ui/react-icons";
 import {
   Card,
@@ -15,7 +17,9 @@ import {
   IconButton,
   Text,
   Popover,
+  DropdownMenu,
 } from "@radix-ui/themes";
+import { Phone } from "lucide-react";
 
 const HOLD_DELAY = 1000;
 
@@ -50,6 +54,8 @@ function StavbaItem({
   const DNY = ["P", "Ú", "S", "Č", "P", "S", "N"];
   const [dnyKontroly, setDnyKontroly] = useState<number[]>(stavba.dnyKontroly);
   const jeOtevrenPopover = openPopoverId === stavba.id;
+
+  const telefon = stavba.kontaktTelefon.replace(/\s/g, "");
 
   return (
     <Card
@@ -165,18 +171,49 @@ function StavbaItem({
       </Flex>
 
       <Flex align="center" gap="2" mb="1">
-        <PersonIcon color="gray" />
+        <BackpackIcon color="gray" />
         <Text size="2">{stavba.zhotovitel}</Text>
       </Flex>
 
-      <Flex align="center" gap="2" mb="1">
-        <MobileIcon color="gray" />
-        <Flex flex="1" justify="between">
-          <Text size="2">{stavba.kontaktOsoba}</Text>
-          <Text size="2" color="gray">
-            {stavba.kontaktTelefon}
+      <Flex align="center" justify="between" gap="3" mb="3">
+        <Flex align="center" gap="2" style={{ minwidth: 0 }}>
+          <PersonIcon color="gray" style={{ flexShrink: 0 }} />
+          <Text size="2" truncate>
+            {stavba.kontaktOsoba}
           </Text>
         </Flex>
+
+        <DropdownMenu.Root modal={false}>
+          <DropdownMenu.Trigger>
+            <IconButton variant="soft" size="2" aria-label="Kontaktovat">
+              <Phone size={16} />
+            </IconButton>
+          </DropdownMenu.Trigger>
+
+          <DropdownMenu.Content>
+            <DropdownMenu.Label>{stavba.kontaktTelefon}</DropdownMenu.Label>
+            <DropdownMenu.Item
+              onSelect={() => (window.location.href = `tel:${telefon}`)}
+            >
+              <Phone size={14} />
+              Zavolat
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              onSelect={() => (window.location.href = `sms:${telefon}`)}
+            >
+              <ChatBubbleIcon size={14} />
+              Napsat SMS
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              onSelect={() =>
+                navigator.clipboard.writeText(stavba.kontaktTelefon)
+              }
+            >
+              <CopyIcon size={14} />
+              Zkopírovat
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
       </Flex>
 
       <Button

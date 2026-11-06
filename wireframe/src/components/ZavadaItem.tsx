@@ -41,7 +41,9 @@ function ZavadaItem({
   const cislo =
     zavada.typ === "povinna"
       ? `${zavada.poradoveCislo})`
-      : `${zavada.poradoveCislo}/${zavada.zdrojKontrola}`;
+      : zavada.povinnaIndex != null
+        ? `Ad ${zavada.povinnaIndex}) ${zavada.poradoveCislo}/${zavada.zdrojKontrola}`
+        : `${zavada.poradoveCislo}/${zavada.zdrojKontrola}`;
 
   return (
     <div
