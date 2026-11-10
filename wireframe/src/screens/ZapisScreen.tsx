@@ -1,11 +1,11 @@
 // src/components/ZapisScreen.tsx
 import HeaderStavby from "../components/HeaderStavby.tsx";
-import SekceZavad from "../components/SekceZavad.tsx";
+import SeznamZavad from "../components/SeznamZavad.tsx";
 import { mockStavby } from "../mockdata.ts";
 import { useParams, useNavigate, useOutlet } from "react-router-dom";
 import { useState } from "react";
 import type { Dodatky, Zavada } from "../types.tsx";
-import { Flex, Box, Button } from "@radix-ui/themes";
+import { Box, Tabs, Badge, Button } from "@radix-ui/themes";
 
 export type ZapisContext = {
   zavady: Zavada[];
@@ -188,6 +188,13 @@ function ZapisScreen() {
     zhotovitele: stavba.zhotovitele ?? [],
   });
 
+  const [rozbalene, setRozbalene] = useState<number[]>([]);
+  const [zalozka, setZalozka] = useState("predchozi");
+  const prepnout = (id: number) =>
+    setRozbalene((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
+    );
+
   const outlet = useOutlet({
     zavady: [...predchoziZavady, ...povinneZavady, ...aktualniZavady],
     predchoziZavady,
@@ -205,45 +212,92 @@ function ZapisScreen() {
   if (outlet) return outlet;
 
   return (
-    <Flex direction="column" gap="4" p="4">
+    <Tabs.Root
+      value={zalozka}
+      onValueChange={(v: string) => setZalozka(v)}
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    >
       <Box
+        px="4"
         style={{
           position: "sticky",
           top: 0,
-          backgroundColor: "var(--color-background)",
           zIndex: 10,
-          paddingBottom: "8px",
+          backgroundColor: "var(--color-background)",
         }}
       >
         <HeaderStavby stavba={stavba} cisloZapisu={noveCisloZapisu} />
+        <Tabs.List>
+          <Tabs.Trigger value="predchozi">
+            Předchozí{" "}
+            <Badge color="red" ml="1">
+              {predchoziZavady.length}
+            </Badge>
+          </Tabs.Trigger>
+          <Tabs.Trigger value="povinne">
+            Checklist{" "}
+            <Badge color="orange" ml="1">
+              {povinneZavady.length}
+            </Badge>
+          </Tabs.Trigger>
+          <Tabs.Trigger value="aktualni">
+            Aktuální{" "}
+            <Badge color="blue" ml="1">
+              {aktualniZavady.length}
+            </Badge>
+          </Tabs.Trigger>
+        </Tabs.List>
       </Box>
-      <SekceZavad
-        nazev="Závady z předchozích kontrol"
-        zavady={predchoziZavady}
-        onStavChange={(id, stav) =>
-          handleStavChange(setPredchoziZavady, id, stav)
-        }
-        barvaSekce="var(--red-9)"
-      />
-      <SekceZavad
-        nazev="Fyzická kontrola stavby"
-        zavady={povinneZavady}
-        onStavChange={(id, stav) =>
-          handleStavChange(setPovinneZavady, id, stav)
-        }
-        barvaSekce="var(--orange-9)"
-      />
-      <SekceZavad
-        nazev="Závady z aktuální kontroly"
-        zavady={aktualniZavady}
-        onPridatZavadu={handlePridatZavadu}
-        showAddButton
-        barvaSekce="var(--blue-9)"
-      />
-      <Button size="4" onClick={pripravitSouhrn}>
-        Pokračovat
-      </Button>
-    </Flex>
+      <Box style={{ flex: 1 }}>
+        <Tabs.Content value="predchozi">
+          <SeznamZavad
+            zavady={predchoziZavady}
+            rozbalene={rozbalene}
+            onToggle={prepnout}
+            onStavChange={(id, stav) =>
+              handleStavChange(setPredchoziZavady, id, stav)
+            }
+          />
+        </Tabs.Content>
+        <Tabs.Content value="povinne">
+          <SeznamZavad
+            zavady={povinneZavady}
+            rozbalene={rozbalene}
+            onToggle={prepnout}
+            onStavChange={(id, stav) =>
+              handleStavChange(setPovinneZavady, id, stav)
+            }
+          />
+        </Tabs.Content>
+        <Tabs.Content value="aktualni">
+          <SeznamZavad
+            zavady={aktualniZavady}
+            rozbalene={rozbalene}
+            onToggle={prepnout}
+            onStavChange={(id, stav) =>
+              handleStavChange(setAktualniZavady, id, stav)
+            }
+            onPridatZavadu={handlePridatZavadu}
+            showAddButton
+          />
+        </Tabs.Content>
+      </Box>
+      <Box
+        p="4"
+        style={{
+          position: "sticky",
+          bottom: 0,
+          zIndex: 10,
+          backgroundColor: "var(--color-background)",
+          borderTop: "1px solid var(--color-border)",
+          paddingBottom: "max(16px, env(safe-area-inset-bottom))",
+        }}
+      >
+        <Button size="4" style={{ width: "100%" }} onClick={pripravitSouhrn}>
+          Pokračovat
+        </Button>
+      </Box>
+    </Tabs.Root>
   );
 }
 
