@@ -38,7 +38,7 @@ function ZavadaInfoScreen() {
   const [stornoDialog, setStornoDialog] = useState(false);
 
   const [novaZavada] = useState(() =>
-    zavadaId === "nova" ? dalsiZavada(location.state?.foto) : null,
+    zavadaId === "nova" ? dalsiZavada(location.state?.fotoIds) : null,
   );
 
   const zavada = novaZavada ?? zavady.find((z) => z.id === Number(zavadaId))!;
