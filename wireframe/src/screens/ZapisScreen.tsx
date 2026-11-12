@@ -6,6 +6,7 @@ import { useParams, useNavigate, useOutlet } from "react-router-dom";
 import { useState } from "react";
 import type { Dodatky, Zavada, Foto } from "../types.tsx";
 import { Box, Tabs, Badge, Button } from "@radix-ui/themes";
+import FotkyZalozka from "../components/FotkyZalozka.tsx";
 
 export type ZapisContext = {
   zavady: Zavada[];
@@ -210,6 +211,45 @@ function ZapisScreen() {
     setFotky((prev) => [...prev, ...noveFotky]);
     return noveFotky.map((f) => f.id);
   };
+  const vyraditFoto = (id: number, vyrazena: boolean) =>
+    setFotky((prev) => prev.map((f) => (f.id === id ? { ...f, vyrazena } : f)));
+  const vsechnySetteryZavad = [
+    setPredchoziZavady,
+    setPovinneZavady,
+    setAktualniZavady,
+  ];
+  const priraditFoto = (zavadaId: number, fotoId: number, ano: boolean) => {
+    for (const set of vsechnySetteryZavad) {
+      set((prev) =>
+        prev.map((z) =>
+          z.id !== zavadaId
+            ? z
+            : {
+                ...z,
+                fotoIds: ano
+                  ? [...new Set([...z.fotoIds, fotoId])]
+                  : z.fotoIds.filter((i) => i !== fotoId),
+              },
+        ),
+      );
+    }
+  };
+  const smazatFoto = (id: number) => {
+    setFotky((prev) => prev.filter((f) => f.id !== id));
+    for (const set of vsechnySetteryZavad) {
+      set((prev) =>
+        prev.map((z) => ({ ...z, fotoIds: z.fotoIds.filter((i) => i !== id) })),
+      );
+    }
+  };
+
+  const cislaFotek = (fotky: Foto[]) =>
+    new Map(
+      fotky
+        .filter((f) => !f.vyrazena)
+        .sort((a, b) => a.porizeno.localeCompare(b.porizeno))
+        .map((f, i) => [f.id, i + 1] as const),
+    );
 
   const outlet = useOutlet({
     zavady: [...predchoziZavady, ...povinneZavady, ...aktualniZavady],
@@ -264,6 +304,12 @@ function ZapisScreen() {
               {aktualniZavady.length}
             </Badge>
           </Tabs.Trigger>
+          <Tabs.Trigger value="fotky">
+            Fotky{" "}
+            <Badge color="gray" ml="1">
+              {fotky.filter((f) => !f.vyrazena).length}
+            </Badge>
+          </Tabs.Trigger>
         </Tabs.List>
       </Box>
       <Box style={{ flex: 1 }}>
@@ -300,6 +346,17 @@ function ZapisScreen() {
             onPridatZavadu={handlePridatZavadu}
             showAddButton
             fotky={fotky}
+          />
+        </Tabs.Content>
+        <Tabs.Content value="fotky">
+          <FotkyZalozka
+            fotky={fotky}
+            zavady={[...predchoziZavady, ...povinneZavady, ...aktualniZavady]}
+            cisla={cislaFotek(fotky)}
+            onPridat={pridatFotky}
+            onVyrazena={vyraditFoto}
+            onSmazat={smazatFoto}
+            onPriradit={priraditFoto}
           />
         </Tabs.Content>
       </Box>
