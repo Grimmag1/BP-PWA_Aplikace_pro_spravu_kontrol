@@ -4,7 +4,7 @@ import SeznamZavad from "../components/SeznamZavad.tsx";
 import { mockStavby } from "../mockdata.ts";
 import { useParams, useNavigate, useOutlet } from "react-router-dom";
 import { useState } from "react";
-import type { Dodatky, Zavada } from "../types.tsx";
+import type { Dodatky, Zavada, Foto } from "../types.tsx";
 import { Box, Tabs, Badge, Button } from "@radix-ui/themes";
 
 export type ZapisContext = {
@@ -12,13 +12,15 @@ export type ZapisContext = {
   predchoziZavady: Zavada[];
   aktualniZavady: Zavada[];
   zmenitStav: (id: number, stav: Zavada["stav"]) => void;
-  dalsiZavada: (foto?: string[]) => Zavada;
+  dalsiZavada: (fotoIds?: number[]) => Zavada;
   ulozitZavadu: (zavada: Zavada) => void;
   zvyraznitNeuplne: boolean;
   setZvyraznitNeuplne: (v: boolean) => void;
   smazatZavadu: (id: number) => void;
   dodatky: Dodatky;
   setDodatky: React.Dispatch<React.SetStateAction<Dodatky>>;
+  fotky: Foto[];
+  pridatFotky: (urls: string[]) => number[];
 };
 
 function ZapisScreen() {
@@ -72,7 +74,7 @@ function ZapisScreen() {
       ...aktualniZavady.map((z) => z.poradoveCislo),
     ) + 1;
 
-  const dalsiZavada = (foto: string[] = []): Zavada => ({
+  const dalsiZavada = (fotoIds: number[] = []): Zavada => ({
     id:
       Math.max(
         0,
@@ -85,7 +87,7 @@ function ZapisScreen() {
     name: "",
     primaryDescription: "",
     secondaryDescription: "",
-    foto,
+    fotoIds,
     stav: "nesoulad",
   });
 
@@ -107,7 +109,7 @@ function ZapisScreen() {
               name: zavada.name,
               primaryDescription: zavada.primaryDescription,
               secondaryDescription: zavada.secondaryDescription,
-              foto: zavada.foto,
+              fotoIds: zavada.fotoIds,
               stav: zavada.stav,
             }
           : z,
@@ -120,8 +122,9 @@ function ZapisScreen() {
     setAktualniZavady((prev) => prev.filter((z) => z.id !== id));
   };
 
-  const handlePridatZavadu = (foto: string[]) => {
-    navigate(`/stavba/${stavbaId}/zapis/zavada/nova`, { state: { foto } });
+  const handlePridatZavadu = (urls: string[]) => {
+    const fotoIds = pridatFotky(urls);
+    navigate(`/stavba/${stavbaId}/zapis/zavada/nova`, { state: { fotoIds } });
   };
 
   const zmenitStav = (id: number, stav: Zavada["stav"]) => {
@@ -172,7 +175,7 @@ function ZapisScreen() {
           name: p.name,
           primaryDescription: p.primaryDescription,
           secondaryDescription: p.secondaryDescription,
-          foto: p.foto,
+          fotoIds: p.fotoIds,
           stav: p.stav,
         }));
       return [...zbyle, ...nove];
@@ -195,6 +198,19 @@ function ZapisScreen() {
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
 
+  const [fotky, setFotky] = useState<Foto[]>([]);
+  const pridatFotky = (urls: string[]) => {
+    const start = Math.max(0, ...fotky.map((f) => f.id)) + 1;
+    const noveFotky = urls.map((url, i) => ({
+      id: start + i,
+      url,
+      porizeno: new Date().toISOString(),
+      vyrazena: false,
+    }));
+    setFotky((prev) => [...prev, ...noveFotky]);
+    return noveFotky.map((f) => f.id);
+  };
+
   const outlet = useOutlet({
     zavady: [...predchoziZavady, ...povinneZavady, ...aktualniZavady],
     predchoziZavady,
@@ -207,6 +223,8 @@ function ZapisScreen() {
     smazatZavadu,
     dodatky,
     setDodatky,
+    fotky,
+    pridatFotky,
   } satisfies ZapisContext);
 
   if (outlet) return outlet;
@@ -257,6 +275,7 @@ function ZapisScreen() {
             onStavChange={(id, stav) =>
               handleStavChange(setPredchoziZavady, id, stav)
             }
+            fotky={fotky}
           />
         </Tabs.Content>
         <Tabs.Content value="povinne">
@@ -267,6 +286,7 @@ function ZapisScreen() {
             onStavChange={(id, stav) =>
               handleStavChange(setPovinneZavady, id, stav)
             }
+            fotky={fotky}
           />
         </Tabs.Content>
         <Tabs.Content value="aktualni">
@@ -279,6 +299,7 @@ function ZapisScreen() {
             }
             onPridatZavadu={handlePridatZavadu}
             showAddButton
+            fotky={fotky}
           />
         </Tabs.Content>
       </Box>

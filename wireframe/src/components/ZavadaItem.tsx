@@ -1,4 +1,4 @@
-import type { Zavada } from "../types.tsx";
+import type { Foto, Zavada } from "../types.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
@@ -18,12 +18,14 @@ function ZavadaItem({
   zvyraznit,
   rozbaleno = true,
   onToggle,
+  fotky,
 }: {
   zavada: Zavada;
   onStavChange?: (id: number, stav: Zavada["stav"]) => void;
   zvyraznit?: boolean;
   rozbaleno?: boolean;
   onToggle?: () => void;
+  fotky: Foto[];
 }) {
   const navigate = useNavigate();
   const { stavbaId } = useParams();
@@ -52,6 +54,10 @@ function ZavadaItem({
   const detail = () => {
     navigate(`/stavba/${stavbaId}/zapis/zavada/${zavada.id}`);
   };
+
+  const fotkyZavady = fotky.filter(
+    (f) => zavada.fotoIds.includes(f.id) && !f.vyrazena,
+  );
   return (
     <div
       style={{
@@ -122,10 +128,10 @@ function ZavadaItem({
                 {zavada.primaryDescription}
               </Text>
 
-              {zavada.foto.length > 0 ? (
+              {fotkyZavady.length > 0 ? (
                 <Box style={{ position: "relative", flexShrink: 0 }}>
                   <img
-                    src={zavada.foto[0]}
+                    src={fotkyZavady[0].url}
                     alt="foto závady"
                     style={{
                       width: 80,
@@ -134,11 +140,11 @@ function ZavadaItem({
                       borderRadius: 4,
                     }}
                   />
-                  {zavada.foto.length > 1 && (
+                  {fotkyZavady.length > 1 && (
                     <Badge
                       style={{ position: "absolute", bottom: 4, right: 4 }}
                     >
-                      +{zavada.foto.length - 1}
+                      +{fotkyZavady.length - 1}
                     </Badge>
                   )}
                 </Box>

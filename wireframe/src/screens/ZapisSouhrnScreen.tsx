@@ -14,6 +14,7 @@ function ZapisSouhrnScreen() {
     aktualniZavady,
     zvyraznitNeuplne,
     setZvyraznitNeuplne,
+    fotky,
   } = useOutletContext<ZapisContext>();
 
   const stavba = mockStavby.find((s) => s.id === Number(stavbaId))!;
@@ -27,8 +28,7 @@ function ZapisSouhrnScreen() {
   ];
 
   const neuplne = zobrazene.filter(
-    (z) =>
-      !z.name.trim() || !z.primaryDescription.trim() || z.foto.length === 0,
+    (z) => !z.name.trim() || !z.primaryDescription.trim(), //TODO souhrn se bude menit, zatim zakomentovano kvuli chybe|| z.foto.length === 0,
   );
 
   const zvyraznene = zvyraznitNeuplne ? neuplne.map((z) => z.id) : [];
@@ -65,12 +65,14 @@ function ZapisSouhrnScreen() {
         zavady={predchoziZavady.filter((z) => z.stav !== "soulad")}
         barvaSekce="var(--red-9)"
         zvyraznene={zvyraznene}
+        fotky={fotky}
       />
       <SekceZavad
         nazev="Nové závady"
         zavady={aktualniZavady}
         barvaSekce="var(--blue-9)"
         zvyraznene={zvyraznene}
+        fotky={fotky}
       />
 
       <Button size="4" onClick={handlePokracovat}>

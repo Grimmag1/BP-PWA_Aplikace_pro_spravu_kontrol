@@ -1,26 +1,25 @@
 import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { Flex, IconButton, Box, Text } from "@radix-ui/themes";
 import { useState, useRef } from "react";
+import type { Foto } from "../types";
 
 function FotoGalerie({
   fotky,
-  onChange,
+  onPridat,
+  onOdebrat,
 }: {
-  fotky: string[];
-  onChange: (fotky: string[]) => void;
+  fotky: Foto[];
+  onPridat: (urls: string[]) => void;
+  onOdebrat: (id: number) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [nahledIndex, setNahledIndex] = useState<number | null>(null);
 
   const handleVyber = (e: React.ChangeEvent<HTMLInputElement>) => {
     const soubory = Array.from(e.target.files ?? []);
-    const noveUrl = soubory.map((s) => URL.createObjectURL(s));
-    onChange([...fotky, ...noveUrl]);
     e.target.value = "";
-  };
-
-  const odstranit = (index: number) => {
-    onChange(fotky.filter((_, i) => i !== index));
+    if (soubory.length === 0) return;
+    onPridat(soubory.map((s) => URL.createObjectURL(s)));
   };
 
   return (
@@ -35,9 +34,9 @@ function FotoGalerie({
       />
 
       <Flex gap="2" style={{ overflowX: "auto", paddingBottom: 4 }}>
-        {fotky.map((url, i) => (
+        {fotky.map((f, i) => (
           <Box
-            key={url}
+            key={f.id}
             style={{
               position: "relative",
               flexShrink: "0",
@@ -46,7 +45,7 @@ function FotoGalerie({
             }}
           >
             <img
-              src={url}
+              src={f.url}
               alt={`foto ${i + 1}`}
               onClick={() => setNahledIndex(i)}
               style={{
@@ -62,7 +61,7 @@ function FotoGalerie({
               color="red"
               variant="solid"
               radius="full"
-              onClick={() => odstranit(i)}
+              onClick={() => onOdebrat(f.id)}
               style={{ position: "absolute", top: 4, right: 4 }}
             >
               <Cross2Icon />
@@ -125,15 +124,15 @@ function FotoGalerie({
               }
             }}
           >
-            {fotky.map((url) => (
+            {fotky.map((f) => (
               <Flex
-                key={url}
+                key={f.id}
                 align="center"
                 justify="center"
                 style={{ flex: "0 0 100%", scrollSnapAlign: "center" }}
               >
                 <img
-                  src={url}
+                  src={f.url}
                   alt=""
                   style={{
                     maxWidth: "100%",

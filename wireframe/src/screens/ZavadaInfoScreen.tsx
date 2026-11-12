@@ -25,8 +25,14 @@ import { TrashIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 function ZavadaInfoScreen() {
   const location = useLocation();
   const { zavadaId } = useParams();
-  const { zavady, dalsiZavada, ulozitZavadu, smazatZavadu } =
-    useOutletContext<ZapisContext>();
+  const {
+    zavady,
+    dalsiZavada,
+    ulozitZavadu,
+    smazatZavadu,
+    fotky,
+    pridatFotky,
+  } = useOutletContext<ZapisContext>();
   const navigate = useNavigate();
 
   const [stornoDialog, setStornoDialog] = useState(false);
@@ -45,14 +51,14 @@ function ZavadaInfoScreen() {
     zavada.secondaryDescription,
   );
   const [stav, setStav] = useState<Zavada["stav"]>(zavada.stav);
-  const [foto, setFoto] = useState<string[]>(zavada.foto);
+  const [fotoIds, setFotoIds] = useState<number[]>(zavada.fotoIds);
 
   const zmenaProvedena =
     name !== zavada.name ||
     primaryDescription !== zavada.primaryDescription ||
     secondaryDescription !== zavada.secondaryDescription ||
     stav !== zavada.stav ||
-    JSON.stringify(foto) !== JSON.stringify(zavada.foto);
+    JSON.stringify(fotoIds) !== JSON.stringify(zavada.fotoIds);
 
   const handleUlozit = () => {
     ulozitZavadu({
@@ -60,14 +66,14 @@ function ZavadaInfoScreen() {
       name,
       primaryDescription,
       secondaryDescription,
-      foto,
+      fotoIds,
       stav,
     });
     navigate(-1);
   };
 
   const potrebaDialog =
-    zmenaProvedena || (zavadaId === "nova" && foto.length > 0);
+    zmenaProvedena || (zavadaId === "nova" && fotoIds.length > 0);
 
   const handleStorno = () => {
     if (potrebaDialog) {
@@ -202,7 +208,11 @@ function ZavadaInfoScreen() {
         rows={3}
       />
 
-      <FotoGalerie fotky={foto} onChange={setFoto}></FotoGalerie>
+      <FotoGalerie
+        fotky={fotky.filter((f) => fotoIds.includes(f.id))}
+        onPridat={(urls) => setFotoIds((p) => [...p, ...pridatFotky(urls)])}
+        onOdebrat={(id) => setFotoIds((p) => p.filter((i) => i !== id))}
+      ></FotoGalerie>
 
       <Flex gap="3">
         <Box flexGrow="1">

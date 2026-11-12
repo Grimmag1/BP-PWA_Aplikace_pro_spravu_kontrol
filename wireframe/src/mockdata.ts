@@ -29,7 +29,7 @@ const povinne = (stavy: [Stav, Stav, Stav]): Bez[] =>
       name: p.name,
       primaryDescription: p.popis,
       secondaryDescription: "",
-      foto: [],
+      fotoIds: [],
       stav: stavy[i],
     }),
   );
@@ -48,7 +48,7 @@ const nova = (
   name,
   primaryDescription: popis,
   secondaryDescription: detail,
-  foto: [],
+  fotoIds: [],
   stav: "nesoulad",
 });
 

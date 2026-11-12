@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Zavada } from "../types.tsx";
+import type { Foto, Zavada } from "../types.tsx";
 import ZavadaItem from "./ZavadaItem.tsx";
 import AddZavadaButton from "./AddZavadaButton.tsx";
 import { Box, Flex, Heading, Text } from "@radix-ui/themes";
@@ -12,6 +12,7 @@ function SekceZavad({
   onPridatZavadu,
   barvaSekce,
   zvyraznene,
+  fotky,
 }: {
   nazev: string;
   zavady: Zavada[];
@@ -20,6 +21,7 @@ function SekceZavad({
   onPridatZavadu?: (foto: string[]) => void;
   barvaSekce?: string;
   zvyraznene?: number[];
+  fotky: Foto[];
 }) {
   const [rozbaleno, setRozbaleno] = useState(true);
 
@@ -65,6 +67,7 @@ function SekceZavad({
                 zavada={zavada}
                 onStavChange={onStavChange}
                 zvyraznit={zvyraznene?.includes(zavada.id)}
+                fotky={fotky}
               />
             ))}
           </Flex>

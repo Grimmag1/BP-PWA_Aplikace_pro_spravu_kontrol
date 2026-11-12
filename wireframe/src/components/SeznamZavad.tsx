@@ -1,4 +1,4 @@
-import type { Zavada } from "../types.tsx";
+import type { Zavada, Foto } from "../types.tsx";
 import { Flex, Text } from "@radix-ui/themes";
 import ZavadaItem from "./ZavadaItem.tsx";
 import AddZavadaButton from "./AddZavadaButton.tsx";
@@ -10,6 +10,7 @@ function SeznamZavad({
   onStavChange,
   onPridatZavadu,
   showAddButton = false,
+  fotky,
 }: {
   zavady: Zavada[];
   rozbalene: number[];
@@ -17,6 +18,7 @@ function SeznamZavad({
   onStavChange?: (id: number, stav: Zavada["stav"]) => void;
   onPridatZavadu?: (foto: string[]) => void;
   showAddButton?: boolean;
+  fotky: Foto[];
 }) {
   return (
     <Flex direction="column" gap="2" pt="3" px="4">
@@ -32,6 +34,7 @@ function SeznamZavad({
           rozbaleno={rozbalene.includes(z.id)}
           onToggle={() => onToggle(z.id)}
           onStavChange={onStavChange}
+          fotky={fotky}
         />
       ))}
       {showAddButton && <AddZavadaButton onPridat={onPridatZavadu} />}

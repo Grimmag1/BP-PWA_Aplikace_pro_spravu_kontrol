@@ -7,7 +7,7 @@ export type Zavada = {
   name: string;
   primaryDescription: string;
   secondaryDescription: string;
-  foto: string[];
+  fotoIds: number[];
   stav: "soulad" | "nesoulad" | "v_procesu" | "null";
 };
 
@@ -52,4 +52,11 @@ export type Dodatky = {
   cinnosti: string[];
   poznamky: string;
   zhotovitele: Zhotovitel[];
+};
+
+export type Foto = {
+  id: number;
+  url: string;
+  porizeno: string;
+  vyrazena: boolean;
 };
