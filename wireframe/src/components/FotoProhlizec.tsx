@@ -8,14 +8,22 @@ import {
   IconButton,
   Switch,
   Text,
+  Badge,
+  TextField,
+  SegmentedControl,
 } from "@radix-ui/themes";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
   Cross2Icon,
   TrashIcon,
+  MagnifyingGlassIcon,
 } from "@radix-ui/react-icons";
 import type { Foto, Zavada } from "../types.tsx";
+
+type TypFiltr = "vse" | Zavada["typ"];
 
 function FotoProhlizec({
   fotky,
@@ -41,6 +49,9 @@ function FotoProhlizec({
   onZavrit: () => void;
 }) {
   const [aktualniId, setAktualniId] = useState(startId);
+  const [seznamOtevren, setSeznamOtevren] = useState(true);
+  const [hledani, setHledani] = useState("");
+  const [typFiltr, setTypFiltr] = useState<TypFiltr>("vse");
   const dotykX = useRef<number | null>(null);
 
   const zive = fronta.filter((id) => fotky.some((f) => f.id === id));
@@ -63,7 +74,7 @@ function FotoProhlizec({
   const popisZavady = (z: Zavada) =>
     `${z.poradoveCislo}${z.typ === "povinna" ? ")" : `/${z.zdrojKontrola}`} ${z.name || "(bez názvu)"}`;
 
-  const pouzitoU = zavady.filter((z) => z.fotoIds.includes(foto.id)).length;
+  const pouziteFotky = zavady.filter((z) => z.fotoIds.includes(foto.id)).length;
 
   const smazat = () => {
     const cil = dalsi ?? predchozi;
@@ -71,6 +82,24 @@ function FotoProhlizec({
     if (cil === null) onZavrit();
     else setAktualniId(cil);
   };
+
+  const bezDiakritiky = (s: string) =>
+    s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+  const hledanyText = bezDiakritiky(hledani.trim());
+  const poradiTypu: Record<Zavada["typ"], number> = {
+    predchozi: 0,
+    povinna: 1,
+    nova: 2,
+  };
+
+  const zobrazeneZavady = zavady
+    .filter((z) => typFiltr === "vse" || z.typ === typFiltr)
+    .filter((z) => bezDiakritiky(z.name).includes(hledanyText))
+    .sort((a, b) => poradiTypu[a.typ] - poradiTypu[b.typ]);
+
+  const skrytePrirazeneZavady = zavady.filter(
+    (z) => z.fotoIds.includes(foto.id) && !zobrazeneZavady.includes(z),
+  ).length;
 
   return (
     <Dialog.Root open onOpenChange={(o: boolean) => !o && onZavrit()}>
@@ -140,6 +169,44 @@ function FotoProhlizec({
                   filter: foto.vyrazena ? "grayscale(1)" : undefined,
                 }}
               />
+              <Flex
+                gap="2"
+                p="2"
+                display={{ initial: "none", md: "flex" }}
+                style={{ overflowX: "auto", flexShrink: 0 }}
+              >
+                {zive.map((id) => {
+                  const f = fotky.find((x) => x.id === id);
+                  if (!f) return null;
+                  const aktivni = id === aktualniId;
+                  return (
+                    <img
+                      key={id}
+                      src={f.url}
+                      alt=""
+                      ref={(el) => {
+                        if (aktivni)
+                          el?.scrollIntoView({
+                            inline: "center",
+                            block: "nearest",
+                          });
+                      }}
+                      onClick={() => setAktualniId(id)}
+                      style={{
+                        width: 56,
+                        height: 56,
+                        flexShrink: 0,
+                        objectFit: "cover",
+                        borderRadius: "var(--radius-2)",
+                        cursor: "pointer",
+                        outline: aktivni ? "2px solid var(--accent-9)" : "none",
+                        opacity: f.vyrazena ? 0.35 : aktivni ? 1 : 0.7,
+                        filter: f.vyrazena ? "grayscale(1)" : undefined,
+                      }}
+                    />
+                  );
+                })}
+              </Flex>
               <IconButton
                 variant="soft"
                 color="gray"
@@ -195,24 +262,94 @@ function FotoProhlizec({
               </Flex>
             </Text>
 
-            <Text size="2" weight="bold">
-              Použito u závad
-            </Text>
-            <Flex direction="column" gap="2">
-              {zavady.map((z) => (
-                <Text as="label" size="2" key={z.id}>
-                  <Flex gap="2" align="center">
-                    <Checkbox
-                      checked={z.fotoIds.includes(foto.id)}
-                      onCheckedChange={(v: boolean | "indeterminate") =>
-                        onPriradit(z.id, foto.id, v === true)
-                      }
-                    />
-                    {popisZavady(z)}
-                  </Flex>
-                </Text>
-              ))}
+            <Flex
+              justify="between"
+              align="center"
+              onClick={() => setSeznamOtevren((o) => !o)}
+              style={{ cursor: "pointer" }}
+            >
+              <Text size="2" weight="bold">
+                Použito u závad ({pouziteFotky})
+              </Text>
+              {seznamOtevren ? <ChevronUpIcon /> : <ChevronDownIcon />}
             </Flex>
+
+            {!seznamOtevren && pouziteFotky > 0 && (
+              <Flex gap="1" wrap="wrap">
+                {zavady
+                  .filter((z) => z.fotoIds.includes(foto.id))
+                  .map((z) => (
+                    <Badge key={z.id} color="gray">
+                      {z.poradoveCislo}
+                      {z.typ === "povinna" ? ")" : `/${z.zdrojKontrola}`}
+                    </Badge>
+                  ))}
+              </Flex>
+            )}
+
+            {seznamOtevren && (
+              <Flex direction="column" gap="2">
+                <TextField.Root
+                  size="2"
+                  placeholder="Hledat podle názvu..."
+                  value={hledani}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setHledani(e.target.value)
+                  }
+                >
+                  <TextField.Slot>
+                    <MagnifyingGlassIcon />
+                  </TextField.Slot>
+                </TextField.Root>
+                <SegmentedControl.Root
+                  size="1"
+                  value={typFiltr}
+                  onValueChange={(v: string) => setTypFiltr(v as TypFiltr)}
+                >
+                  <SegmentedControl.Item value="vse">Vše</SegmentedControl.Item>
+                  <SegmentedControl.Item value="predchozi">
+                    Předchozí
+                  </SegmentedControl.Item>
+                  <SegmentedControl.Item value="povinna">
+                    Checklist
+                  </SegmentedControl.Item>
+                  <SegmentedControl.Item value="aktualni">
+                    Aktuální
+                  </SegmentedControl.Item>
+                </SegmentedControl.Root>
+
+                {zobrazeneZavady.length === 0 && (
+                  <Text size="2" color="gray" align="center">
+                    <em>Žádná závada neodpovídá hledání</em>
+                  </Text>
+                )}
+
+                {zobrazeneZavady.map((z) => (
+                  <Text as="label" size="2" key={z.id}>
+                    <Flex gap="2" align="center">
+                      <Checkbox
+                        checked={z.fotoIds.includes(foto.id)}
+                        onCheckedChange={(v: boolean | "indeterminate") =>
+                          onPriradit(z.id, foto.id, v === true)
+                        }
+                      />
+                      {popisZavady(z)}
+                    </Flex>
+                  </Text>
+                ))}
+
+                {skrytePrirazeneZavady > 0 && (
+                  <Text size="1" color="gray">
+                    + {skrytePrirazeneZavady}
+                    {skrytePrirazeneZavady === 1
+                      ? " závada skrytá filtrem."
+                      : skrytePrirazeneZavady < 4
+                        ? " závady skryté filtrem."
+                        : " závad skrytých filtrem."}
+                  </Text>
+                )}
+              </Flex>
+            )}
 
             <AlertDialog.Root>
               <AlertDialog.Trigger>
@@ -224,7 +361,7 @@ function FotoProhlizec({
                 <AlertDialog.Title>Smazat fotku</AlertDialog.Title>
                 <AlertDialog.Description>
                   Fotka se odstraní i ze všech závad, ke kterým je přiřazená (
-                  {pouzitoU}). Tuto akci nelze vrátit zpět.
+                  {pouziteFotky}). Tuto akci nelze vrátit zpět.
                 </AlertDialog.Description>
                 <Flex gap="3" mt="4" justify="end">
                   <AlertDialog.Cancel>
