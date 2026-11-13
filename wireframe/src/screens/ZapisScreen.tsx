@@ -124,8 +124,7 @@ function ZapisScreen() {
   };
 
   const handlePridatZavadu = (urls: string[]) => {
-    const fotoIds = pridatFotky(urls);
-    navigate(`/stavba/${stavbaId}/zapis/zavada/nova`, { state: { fotoIds } });
+    navigate(`/stavba/${stavbaId}/zapis/zavada/nova`, { state: { urls } });
   };
 
   const zmenitStav = (id: number, stav: Zavada["stav"]) => {

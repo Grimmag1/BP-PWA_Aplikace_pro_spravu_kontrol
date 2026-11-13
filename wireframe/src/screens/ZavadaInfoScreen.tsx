@@ -19,7 +19,7 @@ import {
   TextField,
 } from "@radix-ui/themes";
 import FotoGalerie from "../components/FotoGalerie";
-import type { Zavada } from "../types.tsx";
+import type { Zavada, Foto } from "../types.tsx";
 import { TrashIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
 function ZavadaInfoScreen() {
@@ -38,7 +38,7 @@ function ZavadaInfoScreen() {
   const [stornoDialog, setStornoDialog] = useState(false);
 
   const [novaZavada] = useState(() =>
-    zavadaId === "nova" ? dalsiZavada(location.state?.fotoIds) : null,
+    zavadaId === "nova" ? dalsiZavada() : null,
   );
 
   const zavada = novaZavada ?? zavady.find((z) => z.id === Number(zavadaId))!;
@@ -51,8 +51,23 @@ function ZavadaInfoScreen() {
     zavada.secondaryDescription,
   );
   const [stav, setStav] = useState<Zavada["stav"]>(zavada.stav);
-  const [fotoIds, setFotoIds] = useState<number[]>(zavada.fotoIds);
+  const vyrobFotky = (urls: string[], dosavadni: Foto[]): Foto[] => {
+    const start = Math.min(0, ...dosavadni.map((f) => f.id)) - 1;
+    return urls.map((url, i) => ({
+      id: start - i,
+      url,
+      porizeno: new Date().toISOString(),
+      vyrazena: false,
+    }));
+  };
+  const [noveFotky, setNoveFotky] = useState<Foto[]>(() =>
+    vyrobFotky(location.state?.urls ?? [], []),
+  );
 
+  const [fotoIds, setFotoIds] = useState<number[]>(() => [
+    ...zavada.fotoIds,
+    ...noveFotky.map((f) => f.id),
+  ]);
   const zmenaProvedena =
     name !== zavada.name ||
     primaryDescription !== zavada.primaryDescription ||
@@ -61,16 +76,22 @@ function ZavadaInfoScreen() {
     JSON.stringify(fotoIds) !== JSON.stringify(zavada.fotoIds);
 
   const handleUlozit = () => {
+    const cekajici = noveFotky.filter((f) => fotoIds.includes(f.id));
+    const realIds = pridatFotky(cekajici.map((f) => f.url));
+    const mapa = new Map(cekajici.map((f, i) => [f.id, realIds[i]]));
     ulozitZavadu({
       ...zavada,
       name,
       primaryDescription,
       secondaryDescription,
-      fotoIds,
+      fotoIds: fotoIds.map((id) => mapa.get(id) ?? id),
       stav,
     });
     navigate(-1);
   };
+
+  const zahoditNoveFotky = () =>
+    noveFotky.forEach((f) => URL.revokeObjectURL(f.url));
 
   const potrebaDialog =
     zmenaProvedena || (zavadaId === "nova" && fotoIds.length > 0);
@@ -209,9 +230,16 @@ function ZavadaInfoScreen() {
       />
 
       <FotoGalerie
-        fotky={fotky.filter((f) => fotoIds.includes(f.id))}
-        onPridat={(urls) => setFotoIds((p) => [...p, ...pridatFotky(urls)])}
-        onOdebrat={(id) => setFotoIds((p) => p.filter((i) => i !== id))}
+        fotky={[...fotky, ...noveFotky].filter((f) => fotoIds.includes(f.id))}
+        onPridat={(urls) => {
+          const pridane = vyrobFotky(urls, noveFotky);
+          setNoveFotky((p) => [...p, ...pridane]);
+          setFotoIds((p) => [...p, ...pridane.map((f) => f.id)]);
+        }}
+        onOdebrat={(id) => {
+          if (id < 0) setNoveFotky((p) => p.filter((f) => f.id !== id));
+          setFotoIds((p) => p.filter((i) => i !== id));
+        }}
       ></FotoGalerie>
 
       <Flex gap="3">
@@ -242,7 +270,10 @@ function ZavadaInfoScreen() {
         <Dialog.Content maxWidth="400px">
           <Dialog.Title>Neuložené změny</Dialog.Title>
           <Dialog.Description>
-            Provedli jste změny. Chcete je uložit?
+            Provedli jste změny.{" "}
+            {noveFotky.length > 0 &&
+              `Zahodí se i ${noveFotky.length} nových fotek.`}{" "}
+            Chcete je uložit?
           </Dialog.Description>
           <Flex gap="3" mt="4" justify="end" wrap="wrap">
             <Dialog.Close>
@@ -250,7 +281,14 @@ function ZavadaInfoScreen() {
                 Zpět
               </Button>
             </Dialog.Close>
-            <Button variant="soft" color="red" onClick={() => navigate(-1)}>
+            <Button
+              variant="soft"
+              color="red"
+              onClick={() => {
+                zahoditNoveFotky();
+                navigate(-1);
+              }}
+            >
               Zahodit
             </Button>
             <Button color="green" onClick={handleUlozit}>
