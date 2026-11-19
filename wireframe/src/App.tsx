@@ -6,6 +6,7 @@ import ZapisSouhrnScreen from "./screens/ZapisSouhrnScreen.tsx";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import ZapisDodatkyScreen from "./screens/ZapisDodatkyScreen.tsx";
+import ChecklistInfoScreen from "./screens/ChecklistInfoScreen.tsx";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/" element={<SeznamStavebScreen />} />
       <Route path="/stavba/:stavbaId/zapis/" element={<ZapisScreen />}>
         <Route path="zavada/:zavadaId" element={<ZavadaInfoScreen />} />
+        <Route path="checklist/:cislo" element={<ChecklistInfoScreen />} />
         <Route path="souhrn" element={<ZapisSouhrnScreen />} />
         <Route path="dodatky" element={<ZapisDodatkyScreen />} />
       </Route>

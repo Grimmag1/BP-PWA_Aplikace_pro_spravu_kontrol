@@ -68,3 +68,11 @@ export type Foto = {
   porizeno: string;
   vyrazena: boolean;
 };
+
+export type CilFota = {
+  klic: string;
+  popis: string;
+  kratce: string;
+  skupina: "nova" | "predchozi" | "checklist";
+  fotoIds: number[];
+};

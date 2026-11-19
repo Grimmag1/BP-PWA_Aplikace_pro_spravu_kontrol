@@ -21,13 +21,22 @@ import {
   TrashIcon,
   MagnifyingGlassIcon,
 } from "@radix-ui/react-icons";
-import type { Foto, Zavada } from "../types.tsx";
+import type { Foto, CilFota } from "../types.tsx";
 
-type TypFiltr = "vse" | Zavada["typ"];
+type TypFiltr = "vse" | CilFota["skupina"];
+
+const poradiSkupin: Record<CilFota["skupina"], number> = {
+  predchozi: 0,
+  checklist: 1,
+  nova: 2,
+};
+
+const bezDiakritiky = (s: string) =>
+  s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
 
 function FotoProhlizec({
   fotky,
-  zavady,
+  cile,
   cisla,
   fronta,
   startId,
@@ -38,14 +47,14 @@ function FotoProhlizec({
   onZavrit,
 }: {
   fotky: Foto[];
-  zavady: Zavada[];
+  cile: CilFota[];
   cisla: Map<number, number>;
   fronta: number[];
   startId: number;
   odpovida: (f: Foto) => boolean;
   onVyrazena: (id: number, vyrazena: boolean) => void;
   onSmazat: (id: number) => void;
-  onPriradit: (zavadaId: number, fotoId: number, ano: boolean) => void;
+  onPriradit: (klic: string, fotoId: number, ano: boolean) => void;
   onZavrit: () => void;
 }) {
   const [aktualniId, setAktualniId] = useState(startId);
@@ -71,10 +80,18 @@ function FotoProhlizec({
 
   if (!foto) return null;
 
-  const popisZavady = (z: Zavada) =>
-    `${z.poradoveCislo}${z.typ === "povinna" ? ")" : `/${z.zdrojKontrola}`} ${z.name || "(bez názvu)"}`;
+  const prirazeneCile = cile.filter((c) => c.fotoIds.includes(foto.id));
+  const pocetPrirazeni = prirazeneCile.length;
 
-  const pouziteFotky = zavady.filter((z) => z.fotoIds.includes(foto.id)).length;
+  const hledanyText = bezDiakritiky(hledani.trim());
+  const zobrazeneCile = cile
+    .filter((c) => typFiltr === "vse" || c.skupina === typFiltr)
+    .filter((c) => bezDiakritiky(c.popis).includes(hledanyText))
+    .sort((a, b) => poradiSkupin[a.skupina] - poradiSkupin[b.skupina]);
+
+  const skrytePrirazene = prirazeneCile.filter(
+    (c) => !zobrazeneCile.includes(c),
+  ).length;
 
   const smazat = () => {
     const cil = dalsi ?? predchozi;
@@ -82,24 +99,6 @@ function FotoProhlizec({
     if (cil === null) onZavrit();
     else setAktualniId(cil);
   };
-
-  const bezDiakritiky = (s: string) =>
-    s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
-  const hledanyText = bezDiakritiky(hledani.trim());
-  const poradiTypu: Record<Zavada["typ"], number> = {
-    predchozi: 0,
-    povinna: 1,
-    nova: 2,
-  };
-
-  const zobrazeneZavady = zavady
-    .filter((z) => typFiltr === "vse" || z.typ === typFiltr)
-    .filter((z) => bezDiakritiky(z.name).includes(hledanyText))
-    .sort((a, b) => poradiTypu[a.typ] - poradiTypu[b.typ]);
-
-  const skrytePrirazeneZavady = zavady.filter(
-    (z) => z.fotoIds.includes(foto.id) && !zobrazeneZavady.includes(z),
-  ).length;
 
   return (
     <Dialog.Root open onOpenChange={(o: boolean) => !o && onZavrit()}>
@@ -269,19 +268,18 @@ function FotoProhlizec({
               style={{ cursor: "pointer" }}
             >
               <Text size="2" weight="bold">
-                Použito u závad ({pouziteFotky})
+                Použito u závad ({pocetPrirazeni})
               </Text>
               {seznamOtevren ? <ChevronUpIcon /> : <ChevronDownIcon />}
             </Flex>
 
-            {!seznamOtevren && pouziteFotky > 0 && (
+            {!seznamOtevren && pocetPrirazeni > 0 && (
               <Flex gap="1" wrap="wrap">
-                {zavady
+                {prirazeneCile
                   .filter((z) => z.fotoIds.includes(foto.id))
                   .map((z) => (
-                    <Badge key={z.id} color="gray">
-                      {z.poradoveCislo}
-                      {z.typ === "povinna" ? ")" : `/${z.zdrojKontrola}`}
+                    <Badge key={z.klic} color="gray">
+                      {z.kratce}
                     </Badge>
                   ))}
               </Flex>
@@ -318,32 +316,32 @@ function FotoProhlizec({
                   </SegmentedControl.Item>
                 </SegmentedControl.Root>
 
-                {zobrazeneZavady.length === 0 && (
+                {zobrazeneCile.length === 0 && (
                   <Text size="2" color="gray" align="center">
                     <em>Žádná závada neodpovídá hledání</em>
                   </Text>
                 )}
 
-                {zobrazeneZavady.map((z) => (
-                  <Text as="label" size="2" key={z.id}>
+                {zobrazeneCile.map((z) => (
+                  <Text as="label" size="2" key={z.klic}>
                     <Flex gap="2" align="center">
                       <Checkbox
                         checked={z.fotoIds.includes(foto.id)}
                         onCheckedChange={(v: boolean | "indeterminate") =>
-                          onPriradit(z.id, foto.id, v === true)
+                          onPriradit(z.klic, foto.id, v === true)
                         }
                       />
-                      {popisZavady(z)}
+                      {z.popis}
                     </Flex>
                   </Text>
                 ))}
 
-                {skrytePrirazeneZavady > 0 && (
+                {skrytePrirazene > 0 && (
                   <Text size="1" color="gray">
-                    + {skrytePrirazeneZavady}
-                    {skrytePrirazeneZavady === 1
+                    + {skrytePrirazene}
+                    {skrytePrirazene === 1
                       ? " závada skrytá filtrem."
-                      : skrytePrirazeneZavady < 4
+                      : skrytePrirazene < 4
                         ? " závady skryté filtrem."
                         : " závad skrytých filtrem."}
                   </Text>
@@ -361,7 +359,7 @@ function FotoProhlizec({
                 <AlertDialog.Title>Smazat fotku</AlertDialog.Title>
                 <AlertDialog.Description>
                   Fotka se odstraní i ze všech závad, ke kterým je přiřazená (
-                  {pouziteFotky}). Tuto akci nelze vrátit zpět.
+                  {pocetPrirazeni}). Tuto akci nelze vrátit zpět.
                 </AlertDialog.Description>
                 <Flex gap="3" mt="4" justify="end">
                   <AlertDialog.Cancel>

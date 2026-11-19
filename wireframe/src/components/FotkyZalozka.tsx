@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import type { Foto, Zavada } from "../types";
+import type { CilFota, Foto } from "../types";
 import {
   Flex,
   Button,
@@ -22,7 +22,7 @@ const prazdnaZprava: Record<Filtr, string> = {
 
 function FotkyZalozka({
   fotky,
-  zavady,
+  cile,
   cisla,
   onPridat,
   onVyrazena,
@@ -30,12 +30,12 @@ function FotkyZalozka({
   onPriradit,
 }: {
   fotky: Foto[];
-  zavady: Zavada[];
+  cile: CilFota[];
   cisla: Map<number, number>;
   onPridat: (urls: string[]) => void;
   onVyrazena: (id: number, vyrazena: boolean) => void;
   onSmazat: (id: number) => void;
-  onPriradit: (fotoId: number, zavadaId: number, ano: boolean) => void;
+  onPriradit: (klic: string, fotoId: number, ano: boolean) => void;
 }) {
   const galerieRef = useRef<HTMLInputElement>(null);
   const kameraRef = useRef<HTMLInputElement>(null);
@@ -47,7 +47,7 @@ function FotkyZalozka({
   } | null>(null);
 
   const pouzite = (fotoId: number) =>
-    zavady.filter((z) => z.fotoIds.includes(fotoId));
+    cile.filter((c) => c.fotoIds.includes(fotoId));
   const prirazene = fotky.filter(
     (f) => !f.vyrazena && pouzite(f.id).length > 0,
   );
@@ -211,7 +211,7 @@ function FotkyZalozka({
       {prohlizec && (
         <FotoProhlizec
           fotky={fotky}
-          zavady={zavady}
+          cile={cile}
           cisla={cisla}
           fronta={prohlizec.fronta}
           startId={prohlizec.startId}
