@@ -11,6 +11,13 @@ export type Zavada = {
   stav: "soulad" | "nesoulad" | "v_procesu" | "null";
 };
 
+export type ChecklistZaznam = {
+  cislo: number;
+  stav: Zavada["stav"];
+  poznamka: string;
+  fotoIds: number[];
+};
+
 export type Zapis = {
   id: number;
   poradoveCislo: number;
@@ -20,6 +27,7 @@ export type Zapis = {
   predlozeniTP: boolean;
   cinnosti: string[];
   poznamky: string;
+  checklist: ChecklistZaznam[];
 };
 
 export type Stavba = {

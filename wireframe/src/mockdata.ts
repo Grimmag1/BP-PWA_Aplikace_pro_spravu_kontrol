@@ -1,3 +1,4 @@
+import { vytvorChecklist } from "./checklist";
 import type { Stavba, Zapis, Zavada } from "./types";
 
 type Stav = Zavada["stav"];
@@ -64,6 +65,7 @@ const zapis = (cislo: number, datum: string, zavady: Bez[]): Zapis => ({
   predlozeniTP: false,
   cinnosti: [],
   poznamky: "",
+  checklist: vytvorChecklist(),
 });
 
 // ───────── Stavba A ─────────
