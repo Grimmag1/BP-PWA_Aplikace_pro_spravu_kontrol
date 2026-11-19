@@ -100,7 +100,7 @@ export const CHECKLIST: ChecklistPolozka[] = [
     cislo: 13,
     sekce: "dokumentace",
     nazev:
-      "Předložení aktuálního časového harmonogramu stavebních a montážních prací: ",
+      "Předložení aktuálního časového harmonogramu stavebních a montážních prací",
     vysvetlivka: "",
   },
   {

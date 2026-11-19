@@ -4,37 +4,6 @@ import type { Stavba, Zapis, Zavada } from "./types";
 type Stav = Zavada["stav"];
 type Bez = Omit<Zavada, "id">;
 
-const POVINNE = [
-  {
-    name: "Kontrola BOZP dokumentace",
-    popis: "Dokumentace BOZP je přítomna na stavbě.",
-  },
-  {
-    name: "Kontrola vstupního školení",
-    popis: "Pracovníci mají záznam o vstupním školení.",
-  },
-  {
-    name: "Kontrola hasicích přístrojů",
-    popis: "Hasicí přístroje jsou na místě a mají platnou revizi.",
-  },
-];
-
-const VSE_OK: [Stav, Stav, Stav] = ["soulad", "soulad", "soulad"];
-
-const povinne = (stavy: [Stav, Stav, Stav]): Bez[] =>
-  POVINNE.map(
-    (p, i): Bez => ({
-      poradoveCislo: i + 1,
-      zdrojKontrola: null,
-      typ: "povinna",
-      name: p.name,
-      primaryDescription: p.popis,
-      secondaryDescription: "",
-      fotoIds: [],
-      stav: stavy[i],
-    }),
-  );
-
 // Nová závada: cislo = číslování napříč stavbou, kontrola = zápis, ve kterém vznikla
 const nova = (
   cislo: number,
@@ -42,10 +11,12 @@ const nova = (
   name: string,
   popis: string,
   detail = "",
+  ad?: number,
 ): Bez => ({
   poradoveCislo: cislo,
   zdrojKontrola: kontrola,
   typ: "nova",
+  povinnaIndex: ad,
   name,
   primaryDescription: popis,
   secondaryDescription: detail,
@@ -56,7 +27,12 @@ const nova = (
 // Přenos nevyřešené závady do dalšího zápisu (Y/X zůstává, mění se stav)
 const prenos = (z: Bez, stav: Stav): Bez => ({ ...z, typ: "predchozi", stav });
 
-const zapis = (cislo: number, datum: string, zavady: Bez[]): Zapis => ({
+const zapis = (
+  cislo: number,
+  datum: string,
+  zavady: Bez[],
+  vyjimky: Record<number, Stav> = {},
+): Zapis => ({
   id: cislo,
   poradoveCislo: cislo,
   datum,
@@ -65,7 +41,10 @@ const zapis = (cislo: number, datum: string, zavady: Bez[]): Zapis => ({
   predlozeniTP: false,
   cinnosti: [],
   poznamky: "",
-  checklist: vytvorChecklist(),
+  checklist: vytvorChecklist().map((z) => ({
+    ...z,
+    stav: vyjimky[z.cislo] ?? z.stav,
+  })),
 });
 
 // ───────── Stavba A ─────────
@@ -318,30 +297,33 @@ export const mockStavby: Stavba[] = [
     kontaktTelefon: "+420 731 123 456",
     dnyKontroly: [0, 3],
     zapisy: [
-      zapis(1, "01-08-2026", [
-        ...povinne(["soulad", "soulad", "nesoulad"]),
-        aZapazeni,
-        aVesty,
-        aHasici,
-      ]),
-      zapis(2, "01-09-2026", [
-        prenos(aZapazeni, "nesoulad"),
-        prenos(aVesty, "v_procesu"),
-        prenos(aHasici, "soulad"),
-        ...povinne(VSE_OK),
-        aOploceni,
-        aVedeni,
-      ]),
-      zapis(3, "01-10-2026", [
-        prenos(aZapazeni, "soulad"),
-        prenos(aVesty, "soulad"),
-        prenos(aOploceni, "nesoulad"),
-        prenos(aVedeni, "v_procesu"),
-        ...povinne(["soulad", "nesoulad", "soulad"]),
-        aSkoleni,
-        aVyska,
-        aLeseni,
-      ]),
+      zapis(1, "01-08-2026", [aZapazeni, aVesty, aHasici], { 3: "nesoulad" }),
+      zapis(
+        2,
+        "01-09-2026",
+        [
+          prenos(aZapazeni, "nesoulad"),
+          prenos(aVesty, "v_procesu"),
+          prenos(aHasici, "soulad"),
+          aOploceni,
+          aVedeni,
+        ],
+        { 3: "nesoulad" },
+      ),
+      zapis(
+        3,
+        "01-10-2026",
+        [
+          prenos(aZapazeni, "soulad"),
+          prenos(aVesty, "soulad"),
+          prenos(aOploceni, "nesoulad"),
+          prenos(aVedeni, "v_procesu"),
+          aSkoleni,
+          aVyska,
+          aLeseni,
+        ],
+        { 2: "nesoulad" },
+      ),
     ],
     zhotovitele: [
       {
@@ -366,30 +348,33 @@ export const mockStavby: Stavba[] = [
     kontaktTelefon: "+420 602 987 654",
     dnyKontroly: [1],
     zapisy: [
-      zapis(1, "10-08-2026", [
-        ...povinne(["nesoulad", "soulad", "soulad"]),
-        bDok,
-        bZabradli,
-        bSklad,
-      ]),
-      zapis(2, "10-09-2026", [
-        prenos(bDok, "soulad"),
-        prenos(bZabradli, "nesoulad"),
-        prenos(bSklad, "v_procesu"),
-        ...povinne(VSE_OK),
-        bPrilba,
-        bJamy,
-      ]),
-      zapis(3, "10-10-2026", [
-        prenos(bZabradli, "soulad"),
-        prenos(bSklad, "soulad"),
-        prenos(bPrilba, "nesoulad"),
-        prenos(bJamy, "v_procesu"),
-        ...povinne(["soulad", "soulad", "nesoulad"]),
-        bHasici,
-        bOsvetleni,
-        bZony,
-      ]),
+      zapis(1, "10-08-2026", [bDok, bZabradli, bSklad], { 1: "nesoulad" }),
+      zapis(
+        2,
+        "10-09-2026",
+        [
+          prenos(bDok, "soulad"),
+          prenos(bZabradli, "nesoulad"),
+          prenos(bSklad, "v_procesu"),
+          bPrilba,
+          bJamy,
+        ],
+        { 3: "nesoulad" },
+      ),
+      zapis(
+        3,
+        "10-10-2026",
+        [
+          prenos(bZabradli, "soulad"),
+          prenos(bSklad, "soulad"),
+          prenos(bPrilba, "nesoulad"),
+          prenos(bJamy, "v_procesu"),
+          bHasici,
+          bOsvetleni,
+          bZony,
+        ],
+        { 3: "nesoulad" },
+      ),
     ],
     zhotovitele: [
       {
@@ -414,25 +399,19 @@ export const mockStavby: Stavba[] = [
     kontaktTelefon: "+420 777 456 789",
     dnyKontroly: [2, 4],
     zapisy: [
-      zapis(1, "01-05-2026", [
-        ...povinne(["nesoulad", "soulad", "nesoulad"]),
-        cDok,
-        cHasici,
-        cOop,
-        cKomunikace,
-      ]),
+      zapis(1, "01-05-2026", [cDok, cHasici, cOop, cKomunikace], {
+        3: "nesoulad",
+      }),
       zapis(2, "01-06-2026", [
         prenos(cDok, "soulad"),
         prenos(cHasici, "soulad"),
         prenos(cOop, "soulad"),
         prenos(cKomunikace, "nesoulad"),
-        ...povinne(VSE_OK),
         cZnaceni,
       ]),
       zapis(3, "01-07-2026", [
         prenos(cKomunikace, "soulad"),
         prenos(cZnaceni, "soulad"),
-        ...povinne(VSE_OK),
       ]),
     ],
     zhotovitele: [
@@ -458,19 +437,22 @@ export const mockStavby: Stavba[] = [
     kontaktTelefon: "+420 724 321 987",
     dnyKontroly: [2],
     zapisy: [
-      zapis(1, "15-09-2026", [...povinne(VSE_OK), dVykop, dZnaceni]),
-      zapis(2, "22-09-2026", [
-        prenos(dVykop, "v_procesu"),
-        prenos(dZnaceni, "soulad"),
-        ...povinne(["soulad", "soulad", "nesoulad"]),
-        dHasici,
-        dLeseni,
-      ]),
+      zapis(1, "15-09-2026", [dVykop, dZnaceni]),
+      zapis(
+        2,
+        "22-09-2026",
+        [
+          prenos(dVykop, "v_procesu"),
+          prenos(dZnaceni, "soulad"),
+          dHasici,
+          dLeseni,
+        ],
+        { 3: "nesoulad" },
+      ),
       zapis(3, "29-09-2026", [
         prenos(dVykop, "soulad"),
         prenos(dHasici, "soulad"),
         prenos(dLeseni, "nesoulad"),
-        ...povinne(VSE_OK),
         dOsvetleni,
       ]),
     ],
@@ -497,27 +479,20 @@ export const mockStavby: Stavba[] = [
     kontaktTelefon: "+420 606 555 444",
     dnyKontroly: [0, 2, 4],
     zapisy: [
-      zapis(1, "01-10-2026", [
-        ...povinne(["nesoulad", "soulad", "soulad"]),
-        eDok,
-        ePrilby,
-        eUnik,
-        eLekarnicka,
-      ]),
+      zapis(1, "01-10-2026", [eDok, ePrilby, eUnik, eLekarnicka]),
       zapis(2, "08-10-2026", [
         prenos(eDok, "soulad"),
         prenos(ePrilby, "soulad"),
         prenos(eUnik, "nesoulad"),
         prenos(eLekarnicka, "soulad"),
-        ...povinne(VSE_OK),
         eJerab,
       ]),
-      zapis(3, "15-10-2026", [
-        prenos(eUnik, "soulad"),
-        prenos(eJerab, "v_procesu"),
-        ...povinne(VSE_OK),
-        eChemie,
-      ]),
+      zapis(
+        3,
+        "15-10-2026",
+        [prenos(eUnik, "soulad"), prenos(eJerab, "v_procesu"), eChemie],
+        { 3: "nesoulad" },
+      ),
     ],
     zhotovitele: [
       {
@@ -542,17 +517,11 @@ export const mockStavby: Stavba[] = [
     kontaktTelefon: "+420 739 888 777",
     dnyKontroly: [3],
     zapisy: [
-      zapis(1, "05-10-2026", [
-        ...povinne(["soulad", "nesoulad", "soulad"]),
-        fSkoleni,
-        fSit,
-        fPomucky,
-      ]),
+      zapis(1, "05-10-2026", [fSkoleni, fSit, fPomucky]),
       zapis(2, "12-10-2026", [
         prenos(fSkoleni, "soulad"),
         prenos(fSit, "nesoulad"),
         prenos(fPomucky, "soulad"),
-        ...povinne(VSE_OK),
         fUklid,
         fVykopy,
       ]),
@@ -560,7 +529,6 @@ export const mockStavby: Stavba[] = [
         prenos(fSit, "soulad"),
         prenos(fUklid, "nesoulad"),
         prenos(fVykopy, "soulad"),
-        ...povinne(VSE_OK),
         fZabradli,
       ]),
     ],

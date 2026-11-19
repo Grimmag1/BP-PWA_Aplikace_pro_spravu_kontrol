@@ -4,9 +4,11 @@ import SeznamZavad from "../components/SeznamZavad.tsx";
 import { mockStavby } from "../mockdata.ts";
 import { useParams, useNavigate, useOutlet } from "react-router-dom";
 import { useState } from "react";
-import type { Dodatky, Zavada, Foto } from "../types.tsx";
+import type { Dodatky, Zavada, Foto, ChecklistZaznam } from "../types.tsx";
 import { Box, Tabs, Badge, Button } from "@radix-ui/themes";
 import FotkyZalozka from "../components/FotkyZalozka.tsx";
+import { CHECKLIST, vytvorChecklist } from "../checklist.tsx";
+import ChecklistSeznam from "../components/ChecklistSeznam.tsx";
 
 export type ZapisContext = {
   zavady: Zavada[];
@@ -44,16 +46,17 @@ function ZapisScreen() {
       stav: "nesoulad" as const,
     }));
 
-  const initialPovinneZavady: Zavada[] = posledniZapis.zavady
-    .filter((z) => z.typ === "povinna")
-    .map((z) => ({ ...z, stav: "soulad" as const }));
-
   const [predchoziZavady, setPredchoziZavady] = useState<Zavada[]>(
     initialPredchoziZavady,
   );
-  const [povinneZavady, setPovinneZavady] =
-    useState<Zavada[]>(initialPovinneZavady);
   const [aktualniZavady, setAktualniZavady] = useState<Zavada[]>([]);
+
+  const [checklist, setChecklist] =
+    useState<ChecklistZaznam[]>(vytvorChecklist);
+  const zmenitStavChecklistu = (cislo: number, stav: Zavada["stav"]) =>
+    setChecklist((prev) =>
+      prev.map((z) => (z.cislo === cislo ? { ...z, stav } : z)),
+    );
 
   const handleStavChange = (
     setter: React.Dispatch<React.SetStateAction<Zavada[]>>,
@@ -116,7 +119,6 @@ function ZapisScreen() {
           : z,
       );
     setPredchoziZavady(upravit);
-    setPovinneZavady(upravit);
   };
 
   const smazatZavadu = (id: number) => {
@@ -128,31 +130,28 @@ function ZapisScreen() {
   };
 
   const zmenitStav = (id: number, stav: Zavada["stav"]) => {
-    for (const set of [
-      setPredchoziZavady,
-      setPovinneZavady,
-      setAktualniZavady,
-    ]) {
+    for (const set of [setPredchoziZavady, setAktualniZavady]) {
       set((prev) => prev.map((z) => (z.id === id ? { ...z, stav } : z)));
     }
   };
 
   const pripravitSouhrn = () => {
-    const nesouladPovinne = povinneZavady.filter(
+    const nesouladPovinne = checklist.filter(
       (z) => z.stav === "nesoulad" || z.stav === "v_procesu",
     );
     setAktualniZavady((prev) => {
       const zbyle = prev.filter(
         (z) =>
           z.povinnaIndex == null ||
-          nesouladPovinne.some((p) => p.poradoveCislo === z.povinnaIndex),
+          nesouladPovinne.some((p) => p.cislo === z.povinnaIndex),
       );
       const uzPrevedene = new Set(zbyle.map((z) => z.povinnaIndex));
 
       let dalsiId =
         Math.max(
           0,
-          ...[...predchoziZavady, ...povinneZavady, ...zbyle].map((z) => z.id),
+          ...posledniZapis.zavady.map((z) => z.id),
+          ...zbyle.map((z) => z.id),
         ) + 1;
       let dalsiCislo =
         Math.max(
@@ -165,16 +164,16 @@ function ZapisScreen() {
         ) + 1;
 
       const nove: Zavada[] = nesouladPovinne
-        .filter((p) => !uzPrevedene.has(p.poradoveCislo))
+        .filter((p) => !uzPrevedene.has(p.cislo))
         .map((p) => ({
           id: dalsiId++,
           poradoveCislo: dalsiCislo++,
           zdrojKontrola: noveCisloZapisu,
           typ: "nova" as const,
-          povinnaIndex: p.poradoveCislo,
-          name: p.name,
-          primaryDescription: p.primaryDescription,
-          secondaryDescription: p.secondaryDescription,
+          povinnaIndex: p.cislo,
+          name: CHECKLIST.find((c) => c.cislo === p.cislo)?.nazev ?? "",
+          primaryDescription: p.poznamka,
+          secondaryDescription: "",
           fotoIds: p.fotoIds,
           stav: p.stav,
         }));
@@ -212,11 +211,7 @@ function ZapisScreen() {
   };
   const vyraditFoto = (id: number, vyrazena: boolean) =>
     setFotky((prev) => prev.map((f) => (f.id === id ? { ...f, vyrazena } : f)));
-  const vsechnySetteryZavad = [
-    setPredchoziZavady,
-    setPovinneZavady,
-    setAktualniZavady,
-  ];
+  const vsechnySetteryZavad = [setPredchoziZavady, setAktualniZavady];
   const priraditFoto = (zavadaId: number, fotoId: number, ano: boolean) => {
     for (const set of vsechnySetteryZavad) {
       set((prev) =>
@@ -251,7 +246,7 @@ function ZapisScreen() {
     );
 
   const outlet = useOutlet({
-    zavady: [...predchoziZavady, ...povinneZavady, ...aktualniZavady],
+    zavady: [...predchoziZavady, ...aktualniZavady],
     predchoziZavady,
     aktualniZavady,
     zmenitStav,
@@ -291,10 +286,10 @@ function ZapisScreen() {
               {predchoziZavady.length}
             </Badge>
           </Tabs.Trigger>
-          <Tabs.Trigger value="povinne">
+          <Tabs.Trigger value="checklist">
             Checklist{" "}
             <Badge color="orange" ml="1">
-              {povinneZavady.length}
+              {checklist.filter((z) => z.stav !== "soulad").length}
             </Badge>
           </Tabs.Trigger>
           <Tabs.Trigger value="aktualni">
@@ -323,15 +318,10 @@ function ZapisScreen() {
             fotky={fotky}
           />
         </Tabs.Content>
-        <Tabs.Content value="povinne">
-          <SeznamZavad
-            zavady={povinneZavady}
-            rozbalene={rozbalene}
-            onToggle={prepnout}
-            onStavChange={(id, stav) =>
-              handleStavChange(setPovinneZavady, id, stav)
-            }
-            fotky={fotky}
+        <Tabs.Content value="checklist">
+          <ChecklistSeznam
+            checklist={checklist}
+            onStav={zmenitStavChecklistu}
           />
         </Tabs.Content>
         <Tabs.Content value="aktualni">
@@ -350,7 +340,7 @@ function ZapisScreen() {
         <Tabs.Content value="fotky">
           <FotkyZalozka
             fotky={fotky}
-            zavady={[...predchoziZavady, ...povinneZavady, ...aktualniZavady]}
+            zavady={[...predchoziZavady, ...aktualniZavady]}
             cisla={cislaFotek(fotky)}
             onPridat={pridatFotky}
             onVyrazena={vyraditFoto}
